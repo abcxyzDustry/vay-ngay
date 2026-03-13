@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -35,27 +34,27 @@
 position: fixed;
 left: 0; top: 0; bottom: 0;
 width: 240px;
-background: var(–dark2);
-border-right: 1px solid var(–border);
+background: var(--dark2);
+border-right: 1px solid var(--border);
 display: flex;
 flex-direction: column;
 z-index: 100;
 }
 .sb-logo {
 padding: 28px 24px 20px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 }
 .sb-logo .brand {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 28px;
 letter-spacing: 3px;
-background: linear-gradient(135deg, var(–red), var(–gold));
+background: linear-gradient(135deg, var(--red), var(--gold));
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 }
 .sb-logo .sub {
 font-size: 10px;
-color: var(–muted);
+color: var(--muted);
 letter-spacing: 2px;
 text-transform: uppercase;
 margin-top: 2px;
@@ -65,7 +64,7 @@ margin-top: 2px;
 font-size: 10px;
 letter-spacing: 2px;
 text-transform: uppercase;
-color: var(–muted);
+color: var(--muted);
 padding: 8px 12px 6px;
 margin-top: 8px;
 }
@@ -77,16 +76,16 @@ padding: 11px 14px;
 border-radius: 10px;
 cursor: pointer;
 font-size: 14px;
-color: var(–muted);
+color: var(--muted);
 transition: all 0.2s;
 margin-bottom: 2px;
 }
-.sb-item:hover { background: rgba(255,255,255,0.04); color: var(–text); }
-.sb-item.active { background: rgba(232,25,44,0.12); color: var(–red); }
+.sb-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.sb-item.active { background: rgba(232,25,44,0.12); color: var(--red); }
 .sb-item .icon { font-size: 16px; width: 20px; text-align:center; }
 .sb-badge {
 margin-left: auto;
-background: var(–red);
+background: var(--red);
 color: white;
 font-size: 10px;
 font-weight: 700;
@@ -97,15 +96,15 @@ text-align: center;
 }
 .sb-footer {
 padding: 16px 24px;
-border-top: 1px solid var(–border);
+border-top: 1px solid var(--border);
 font-size: 11px;
-color: var(–muted);
+color: var(--muted);
 line-height: 1.5;
 }
 .online-dot {
 display: inline-block;
 width: 6px; height: 6px;
-background: var(–green);
+background: var(--green);
 border-radius: 50%;
 margin-right: 4px;
 animation: blink 1.5s infinite;
@@ -126,7 +125,7 @@ position: sticky;
 top: 0;
 background: rgba(8,8,15,0.85);
 backdrop-filter: blur(20px);
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 padding: 16px 32px;
 display: flex;
 align-items: center;
@@ -134,19 +133,19 @@ justify-content: space-between;
 z-index: 50;
 }
 .topbar h1 {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 22px;
 letter-spacing: 2px;
-color: var(–text);
+color: var(--text);
 }
 .topbar-actions { display: flex; gap: 12px; align-items: center; }
 .btn-refresh {
 background: rgba(255,255,255,0.06);
-border: 1px solid var(–border);
-color: var(–text);
+border: 1px solid var(--border);
+color: var(--text);
 padding: 8px 16px;
 border-radius: 8px;
-font-family: ‘Be Vietnam Pro’, sans-serif;
+font-family: 'Be Vietnam Pro', sans-serif;
 font-size: 13px;
 cursor: pointer;
 transition: all 0.2s;
@@ -155,10 +154,10 @@ transition: all 0.2s;
 .btn-clear-all {
 background: rgba(232,25,44,0.1);
 border: 1px solid rgba(232,25,44,0.3);
-color: var(–red);
+color: var(--red);
 padding: 8px 16px;
 border-radius: 8px;
-font-family: ‘Be Vietnam Pro’, sans-serif;
+font-family: 'Be Vietnam Pro', sans-serif;
 font-size: 13px;
 cursor: pointer;
 transition: all 0.2s;
@@ -167,7 +166,7 @@ transition: all 0.2s;
 .admin-tag {
 background: rgba(245,166,35,0.15);
 border: 1px solid rgba(245,166,35,0.3);
-color: var(–gold);
+color: var(--gold);
 font-size: 11px;
 font-weight: 700;
 padding: 4px 12px;
@@ -186,8 +185,8 @@ gap: 16px;
 margin-bottom: 28px;
 }
 .stat-card {
-background: var(–card);
-border: 1px solid var(–border);
+background: var(--card);
+border: 1px solid var(--border);
 border-radius: 16px;
 padding: 20px 22px;
 position: relative;
@@ -196,34 +195,34 @@ transition: transform 0.2s;
 }
 .stat-card:hover { transform: translateY(-2px); }
 .stat-card::before {
-content:’’;
+content:'';
 position: absolute;
 top: 0; right: 0;
 width: 80px; height: 80px;
 border-radius: 50%;
 opacity: 0.15;
 }
-.stat-card.red::before { background: var(–red); top:-20px; right:-20px; }
-.stat-card.gold::before { background: var(–gold); top:-20px; right:-20px; }
-.stat-card.green::before { background: var(–green); top:-20px; right:-20px; }
+.stat-card.red::before { background: var(--red); top:-20px; right:-20px; }
+.stat-card.gold::before { background: var(--gold); top:-20px; right:-20px; }
+.stat-card.green::before { background: var(--green); top:-20px; right:-20px; }
 .stat-card.blue::before { background: #3B82F6; top:-20px; right:-20px; }
 .stat-icon { font-size: 22px; margin-bottom: 12px; display: block; }
 .stat-val {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 36px;
 line-height: 1;
 margin-bottom: 4px;
 }
-.stat-card.red .stat-val { color: var(–red); }
-.stat-card.gold .stat-val { color: var(–gold); }
-.stat-card.green .stat-val { color: var(–green); }
+.stat-card.red .stat-val { color: var(--red); }
+.stat-card.gold .stat-val { color: var(--gold); }
+.stat-card.green .stat-val { color: var(--green); }
 .stat-card.blue .stat-val { color: #3B82F6; }
-.stat-lbl { font-size: 12px; color: var(–muted); }
+.stat-lbl { font-size: 12px; color: var(--muted); }
 .stat-trend {
 position: absolute;
 top: 16px; right: 16px;
 font-size: 11px;
-color: var(–green);
+color: var(--green);
 background: rgba(34,197,94,0.1);
 padding: 2px 8px;
 border-radius: 20px;
@@ -237,7 +236,7 @@ justify-content: space-between;
 margin-bottom: 16px;
 }
 .table-header h2 {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 20px;
 letter-spacing: 1px;
 }
@@ -245,10 +244,10 @@ letter-spacing: 1px;
 .filter-btn {
 padding: 6px 14px;
 border-radius: 8px;
-border: 1px solid var(–border);
+border: 1px solid var(--border);
 background: rgba(255,255,255,0.04);
-color: var(–muted);
-font-family: ‘Be Vietnam Pro’, sans-serif;
+color: var(--muted);
+font-family: 'Be Vietnam Pro', sans-serif;
 font-size: 12px;
 cursor: pointer;
 transition: all 0.2s;
@@ -256,18 +255,18 @@ transition: all 0.2s;
 .filter-btn.active, .filter-btn:hover {
 background: rgba(232,25,44,0.12);
 border-color: rgba(232,25,44,0.3);
-color: var(–red);
+color: var(--red);
 }
 
 .table-wrap {
-background: var(–card);
-border: 1px solid var(–border);
+background: var(--card);
+border: 1px solid var(--border);
 border-radius: 16px;
 overflow: hidden;
 margin-bottom: 24px;
 }
 table { width: 100%; border-collapse: collapse; }
-thead tr { background: var(–dark3); }
+thead tr { background: var(--dark3); }
 th {
 padding: 14px 16px;
 text-align: left;
@@ -275,8 +274,8 @@ font-size: 11px;
 font-weight: 700;
 letter-spacing: 1px;
 text-transform: uppercase;
-color: var(–muted);
-border-bottom: 1px solid var(–border);
+color: var(--muted);
+border-bottom: 1px solid var(--border);
 }
 td {
 padding: 14px 16px;
@@ -298,15 +297,15 @@ font-weight: 700;
 letter-spacing: 0.5px;
 }
 .badge.reviewing { background: rgba(59,130,246,0.15); color: #60A5FA; border: 1px solid rgba(59,130,246,0.3); }
-.badge.approved { background: rgba(245,166,35,0.15); color: var(–gold); border: 1px solid rgba(245,166,35,0.3); }
-.badge.disbursed { background: rgba(34,197,94,0.12); color: var(–green); border: 1px solid rgba(34,197,94,0.3); }
-.badge.overdue { background: rgba(232,25,44,0.12); color: var(–red); border: 1px solid rgba(232,25,44,0.3); }
+.badge.approved { background: rgba(245,166,35,0.15); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+.badge.disbursed { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+.badge.overdue { background: rgba(232,25,44,0.12); color: var(--red); border: 1px solid rgba(232,25,44,0.3); }
 
 .action-btn {
 padding: 6px 12px;
 border-radius: 7px;
 border: none;
-font-family: ‘Be Vietnam Pro’, sans-serif;
+font-family: 'Be Vietnam Pro', sans-serif;
 font-size: 12px;
 cursor: pointer;
 transition: all 0.15s;
@@ -314,9 +313,9 @@ margin-right: 4px;
 }
 .action-btn.view { background: rgba(59,130,246,0.15); color: #60A5FA; }
 .action-btn.view:hover { background: rgba(59,130,246,0.25); }
-.action-btn.del { background: rgba(232,25,44,0.1); color: var(–red); }
+.action-btn.del { background: rgba(232,25,44,0.1); color: var(--red); }
 .action-btn.del:hover { background: rgba(232,25,44,0.2); }
-.action-btn.approve { background: rgba(34,197,94,0.12); color: var(–green); }
+.action-btn.approve { background: rgba(34,197,94,0.12); color: var(--green); }
 .action-btn.approve:hover { background: rgba(34,197,94,0.22); }
 
 .empty-state {
@@ -324,7 +323,7 @@ text-align: center;
 padding: 60px 20px;
 }
 .empty-state .icon { font-size: 48px; display: block; margin-bottom: 16px; opacity: 0.3; }
-.empty-state p { font-size: 14px; color: var(–muted); }
+.empty-state p { font-size: 14px; color: var(--muted); }
 
 /* MODAL */
 .modal-overlay {
@@ -343,8 +342,8 @@ transition: opacity 0.25s;
 }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 .modal {
-background: var(–card2);
-border: 1px solid var(–border);
+background: var(--card2);
+border: 1px solid var(--border);
 border-radius: 20px;
 padding: 36px;
 max-width: 520px;
@@ -362,32 +361,32 @@ justify-content: space-between;
 margin-bottom: 24px;
 }
 .modal-header h3 {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 24px;
 letter-spacing: 2px;
 }
 .modal-close {
 background: rgba(255,255,255,0.06);
 border: none;
-color: var(–muted);
+color: var(--muted);
 width: 32px; height: 32px;
 border-radius: 8px;
 cursor: pointer;
 font-size: 16px;
 transition: all 0.2s;
 }
-.modal-close:hover { background: rgba(232,25,44,0.15); color: var(–red); }
+.modal-close:hover { background: rgba(232,25,44,0.15); color: var(--red); }
 
 .detail-row {
 display: flex;
 justify-content: space-between;
 align-items: flex-start;
 padding: 12px 0;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 gap: 16px;
 }
 .detail-row:last-child { border-bottom: none; }
-.detail-row .dk { font-size: 12px; color: var(–muted); flex-shrink:0; }
+.detail-row .dk { font-size: 12px; color: var(--muted); flex-shrink:0; }
 .detail-row .dv { font-size: 14px; font-weight: 600; text-align: right; }
 
 /* CHART SECTION */
@@ -398,21 +397,21 @@ gap: 16px;
 margin-bottom: 24px;
 }
 .chart-card {
-background: var(–card);
-border: 1px solid var(–border);
+background: var(--card);
+border: 1px solid var(--border);
 border-radius: 16px;
 padding: 20px;
 }
 .chart-card h3 {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 16px;
 letter-spacing: 1px;
 margin-bottom: 16px;
-color: var(–muted);
+color: var(--muted);
 }
 .bar-chart { display: flex; flex-direction: column; gap: 10px; }
 .bar-item { display: flex; align-items: center; gap: 12px; }
-.bar-label { font-size: 12px; color: var(–muted); min-width: 80px; }
+.bar-label { font-size: 12px; color: var(--muted); min-width: 80px; }
 .bar-track {
 flex: 1;
 height: 8px;
@@ -440,11 +439,11 @@ flex-wrap: wrap;
 /* SEARCH */
 .search-bar {
 background: rgba(255,255,255,0.05);
-border: 1px solid var(–border);
+border: 1px solid var(--border);
 border-radius: 10px;
 padding: 9px 14px;
-color: var(–text);
-font-family: ‘Be Vietnam Pro’, sans-serif;
+color: var(--text);
+font-family: 'Be Vietnam Pro', sans-serif;
 font-size: 13px;
 outline: none;
 width: 220px;
@@ -454,7 +453,7 @@ transition: all 0.2s;
 border-color: rgba(232,25,44,0.4);
 background: rgba(232,25,44,0.04);
 }
-.search-bar::placeholder { color: var(–muted); }
+.search-bar::placeholder { color: var(--muted); }
 
 /* RESPONSIVE */
 @media(max-width: 1024px) {
@@ -485,7 +484,6 @@ background: rgba(232,25,44,0.04);
 <body>
 
 <!-- SIDEBAR -->
-
 <div class="sidebar">
   <div class="sb-logo">
     <div class="brand">VAYNGAY</div>
@@ -520,7 +518,6 @@ background: rgba(232,25,44,0.04);
 </div>
 
 <!-- MAIN -->
-
 <div class="main">
   <div class="topbar">
     <h1>ADMIN DASHBOARD</h1>
@@ -559,160 +556,156 @@ background: rgba(232,25,44,0.04);
         </div>
       </div>
 
-```
-  <div class="chart-section">
-    <div class="chart-card">
-      <h3>PHÂN BỔ TRẠNG THÁI</h3>
-      <div class="bar-chart" id="status-bars"></div>
-    </div>
-    <div class="chart-card">
-      <h3>THU NHẬP KHÁCH HÀNG</h3>
-      <div class="bar-chart" id="income-bars"></div>
-    </div>
-  </div>
+      <div class="chart-section">
+        <div class="chart-card">
+          <h3>PHÂN BỔ TRẠNG THÁI</h3>
+          <div class="bar-chart" id="status-bars"></div>
+        </div>
+        <div class="chart-card">
+          <h3>THU NHẬP KHÁCH HÀNG</h3>
+          <div class="bar-chart" id="income-bars"></div>
+        </div>
+      </div>
 
-  <!-- Recent table -->
-  <div class="table-header">
-    <h2>ĐƠN VAY GẦN ĐÂY</h2>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Họ tên</th>
-          <th>SĐT</th>
-          <th>Thu nhập</th>
-          <th>Trạng thái</th>
-          <th>Thời gian</th>
-          <th>Thao tác</th>
-        </tr>
-      </thead>
-      <tbody id="recent-table"></tbody>
-    </table>
-    <div class="empty-state" id="recent-empty" style="display:none">
-      <span class="icon">📭</span>
-      <p>Chưa có đơn vay nào được gửi</p>
-    </div>
-  </div>
-</div>
-
-<!-- APPLICATIONS TAB -->
-<div class="section-tab" id="tab-applications">
-  <div class="table-header">
-    <h2>TẤT CẢ ĐƠN VAY</h2>
-    <div class="filter-row">
-      <button class="filter-btn active" onclick="filterStatus('all', this)">Tất cả</button>
-      <button class="filter-btn" onclick="filterStatus('reviewing', this)">Đang xét</button>
-      <button class="filter-btn" onclick="filterStatus('approved', this)">Đã duyệt</button>
-      <button class="filter-btn" onclick="filterStatus('disbursed', this)">Giải ngân</button>
-    </div>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Họ và tên</th>
-          <th>SĐT</th>
-          <th>CCCD</th>
-          <th>Thu nhập</th>
-          <th>Mục đích</th>
-          <th>Hạn mức</th>
-          <th>Trạng thái</th>
-          <th>Ngày đăng ký</th>
-          <th>Thao tác</th>
-        </tr>
-      </thead>
-      <tbody id="all-table"></tbody>
-    </table>
-    <div class="empty-state" id="all-empty" style="display:none">
-      <span class="icon">📭</span>
-      <p>Không có đơn vay nào</p>
-    </div>
-  </div>
-</div>
-
-<!-- DISBURSED TAB -->
-<div class="section-tab" id="tab-disbursed">
-  <div class="table-header">
-    <h2>DANH SÁCH ĐÃ GIẢI NGÂN</h2>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Họ và tên</th>
-          <th>SĐT</th>
-          <th>Số tiền vay</th>
-          <th>Phí CM (30%)</th>
-          <th>Tổng hoàn trả</span></th>
-          <th>Ngày giải ngân</th>
-          <th>Hạn trả nợ</th>
-          <th>Trạng thái</th>
-        </tr>
-      </thead>
-      <tbody id="disbursed-table"></tbody>
-    </table>
-    <div class="empty-state" id="disbursed-empty" style="display:none">
-      <span class="icon">💸</span>
-      <p>Chưa có khoản nào được giải ngân</p>
-    </div>
-  </div>
-</div>
-
-<!-- SETTINGS TAB -->
-<div class="section-tab" id="tab-settings">
-  <div style="max-width:540px">
-    <div class="chart-card" style="margin-bottom:16px">
-      <h3 style="margin-bottom:20px;color:var(--text)">⚙️ CÀI ĐẶT HỆ THỐNG</h3>
-      <div class="detail-row">
-        <span class="dk">Hạn mức vay</span>
-        <span class="dv" style="color:var(--gold)">2.000.000 đ</span>
+      <!-- Recent table -->
+      <div class="table-header">
+        <h2>ĐƠN VAY GẦN ĐÂY</h2>
       </div>
-      <div class="detail-row">
-        <span class="dk">Tỷ lệ chứng minh</span>
-        <span class="dv">30% = 600.000 đ</span>
-      </div>
-      <div class="detail-row">
-        <span class="dk">Lãi suất cố định</span>
-        <span class="dv" style="color:var(--red)">200.000 đ / tháng</span>
-      </div>
-      <div class="detail-row">
-        <span class="dk">Thời hạn vay</span>
-        <span class="dv">1 tháng</span>
-      </div>
-      <div class="detail-row">
-        <span class="dk">Ngân hàng nhận</span>
-        <span class="dv">VIB — 068394585</span>
-      </div>
-      <div class="detail-row">
-        <span class="dk">QR Template</span>
-        <span class="dv" style="color:#60A5FA;font-size:12px">sepay.vn/img?bank=VIB&acc=068394585</span>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Họ tên</th>
+              <th>SĐT</th>
+              <th>Thu nhập</th>
+              <th>Trạng thái</th>
+              <th>Thời gian</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="recent-table"></tbody>
+        </table>
+        <div class="empty-state" id="recent-empty" style="display:none">
+          <span class="icon">📭</span>
+          <p>Chưa có đơn vay nào được gửi</p>
+        </div>
       </div>
     </div>
 
-    <div class="chart-card">
-      <h3 style="margin-bottom:20px;color:var(--text)">📱 QR CÀI ĐẶT</h3>
-      <div style="background:white;border-radius:12px;padding:12px;display:inline-block;margin-bottom:16px;">
-        <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=compact&amount=600000&des=chung+minh+kha+nang+thanh+toan+30%25" 
-             style="width:160px;height:160px;display:block;border-radius:6px;" alt="QR">
+    <!-- APPLICATIONS TAB -->
+    <div class="section-tab" id="tab-applications">
+      <div class="table-header">
+        <h2>TẤT CẢ ĐƠN VAY</h2>
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="filterStatus('all', this)">Tất cả</button>
+          <button class="filter-btn" onclick="filterStatus('reviewing', this)">Đang xét</button>
+          <button class="filter-btn" onclick="filterStatus('approved', this)">Đã duyệt</button>
+          <button class="filter-btn" onclick="filterStatus('disbursed', this)">Giải ngân</button>
+        </div>
       </div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.8;">
-        <b style="color:var(--text)">Link QR:</b><br>
-        <span style="font-size:11px;word-break:break-all;color:#60A5FA;">
-          https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=compact&amount=600000&des=chung+minh+kha+nang+thanh+toan+30%25
-        </span>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Họ và tên</th>
+              <th>SĐT</th>
+              <th>CCCD</th>
+              <th>Thu nhập</th>
+              <th>Mục đích</th>
+              <th>Hạn mức</th>
+              <th>Trạng thái</th>
+              <th>Ngày đăng ký</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="all-table"></tbody>
+        </table>
+        <div class="empty-state" id="all-empty" style="display:none">
+          <span class="icon">📭</span>
+          <p>Không có đơn vay nào</p>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-```
 
+    <!-- DISBURSED TAB -->
+    <div class="section-tab" id="tab-disbursed">
+      <div class="table-header">
+        <h2>DANH SÁCH ĐÃ GIẢI NGÂN</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Họ và tên</th>
+              <th>SĐT</th>
+              <th>Số tiền vay</th>
+              <th>Phí CM (30%)</th>
+              <th>Tổng hoàn trả</th>
+              <th>Ngày giải ngân</th>
+              <th>Hạn trả nợ</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody id="disbursed-table"></tbody>
+        </table>
+        <div class="empty-state" id="disbursed-empty" style="display:none">
+          <span class="icon">💸</span>
+          <p>Chưa có khoản nào được giải ngân</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="section-tab" id="tab-settings">
+      <div style="max-width:540px">
+        <div class="chart-card" style="margin-bottom:16px">
+          <h3 style="margin-bottom:20px;color:var(--text)">⚙️ CÀI ĐẶT HỆ THỐNG</h3>
+          <div class="detail-row">
+            <span class="dk">Hạn mức vay</span>
+            <span class="dv" style="color:var(--gold)">2.000.000 đ</span>
+          </div>
+          <div class="detail-row">
+            <span class="dk">Tỷ lệ chứng minh</span>
+            <span class="dv">30% = 600.000 đ</span>
+          </div>
+          <div class="detail-row">
+            <span class="dk">Lãi suất cố định</span>
+            <span class="dv" style="color:var(--red)">200.000 đ / tháng</span>
+          </div>
+          <div class="detail-row">
+            <span class="dk">Thời hạn vay</span>
+            <span class="dv">1 tháng</span>
+          </div>
+          <div class="detail-row">
+            <span class="dk">Ngân hàng nhận</span>
+            <span class="dv">VIB — 068394585</span>
+          </div>
+          <div class="detail-row">
+            <span class="dk">QR Template</span>
+            <span class="dv" style="color:#60A5FA;font-size:12px">sepay.vn/img?bank=VIB&acc=068394585</span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 style="margin-bottom:20px;color:var(--text)">📱 QR CÀI ĐẶT</h3>
+          <div style="background:white;border-radius:12px;padding:12px;display:inline-block;margin-bottom:16px;">
+            <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=compact&amount=600000&des=chung+minh+kha+nang+thanh+toan+30%25" 
+                 style="width:160px;height:160px;display:block;border-radius:6px;" alt="QR">
+          </div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.8;">
+            <b style="color:var(--text)">Link QR:</b><br>
+            <span style="font-size:11px;word-break:break-all;color:#60A5FA;">
+              https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=compact&amount=600000&des=chung+minh+kha+nang+thanh+toan+30%25
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- DETAIL MODAL -->
-
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-header">
@@ -954,8 +947,20 @@ background: rgba(232,25,44,0.04);
     try {
       const res  = await fetch(`${API_BASE}/api/applications`, { method: 'DELETE' });
       const json = await res.json();
-      if (json.success) { allApps = []; updateStatsUI({ counts: {total:0,reviewing:0,approved:0,pendingPayment:0,disbursed:0,overdue:0,paid:0}, financials:{}, incomeGroups:[], purposeGroups:[] }); renderRecentTable(); renderAllTable(); renderDisbursedTable(); }
-      else { alert(json.message); }
+      if (json.success) { 
+        allApps = []; 
+        updateStatsUI({ 
+          counts: {total:0,reviewing:0,approved:0,pendingPayment:0,disbursed:0,overdue:0,paid:0}, 
+          financials: {}, 
+          incomeGroups: [], 
+          purposeGroups: [] 
+        }); 
+        renderRecentTable(); 
+        renderAllTable(currentFilter); 
+        renderDisbursedTable(); 
+      } else { 
+        alert(json.message); 
+      }
     } catch (err) { alert('Lỗi kết nối.'); }
   }
 
