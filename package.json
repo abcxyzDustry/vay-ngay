@@ -1,7 +1,7 @@
 {
-  "name": "vayngay",
-  "version": "1.0.0",
-  "description": "VayNgay - Ứng dụng cho vay tiền nhanh",
+  "name": "vayngay-backend",
+  "version": "2.0.0",
+  "description": "VayNgay Backend — Express + MongoDB Atlas",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
