@@ -237,7 +237,29 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .history-item:hover{background:rgba(255,255,255,.02)}
 .deadline-bar{background:rgba(255,255,255,.06);border-radius:4px;height:6px;overflow:hidden;margin-top:6px}
 .deadline-fill{height:100%;border-radius:4px;transition:width .5s}
-/* ── REPAY OPTIONS ── */
+/* ── LOAN DETAIL ── */
+.ld-section{margin-bottom:20px}
+.ld-section-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ld-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ld-item{background:rgba(255,255,255,.04);border-radius:10px;padding:11px 13px}
+.ld-item .k{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.ld-item .v{font-size:13px;font-weight:600}
+.ld-timeline{display:flex;flex-direction:column;gap:0}
+.ld-tl-item{display:flex;gap:12px;position:relative;padding-bottom:16px}
+.ld-tl-item:last-child{padding-bottom:0}
+.ld-tl-item:last-child::before{display:none}
+.ld-tl-item::before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:1px;background:var(--border)}
+.ld-tl-dot{width:23px;height:23px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;position:relative;z-index:1}
+.ld-tl-dot.done{background:var(--green);color:#001A10}
+.ld-tl-dot.active{background:var(--red);color:white;animation:pulse-badge 2s infinite}
+.ld-tl-dot.wait{background:var(--bg3);border:1px solid var(--border2);color:var(--muted)}
+.ld-tl-body{flex:1;padding-top:2px}
+.ld-tl-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.ld-tl-sub{font-size:11px;color:var(--muted)}
+/* History item clickable */
+.history-item{cursor:pointer}
+.history-item .hi-arrow{color:var(--muted);font-size:14px;margin-left:8px;transition:transform .2s}
+.history-item:hover .hi-arrow{transform:translateX(3px);color:var(--gold)}
 .repay-opt{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:10px;cursor:pointer;transition:all .2s;background:var(--bg3)}
 .repay-opt:hover{border-color:rgba(0,214,143,.4);background:rgba(0,214,143,.04)}
 .repay-opt.selected{border-color:var(--green);background:rgba(0,214,143,.06);box-shadow:0 0 0 3px var(--greeng)}
@@ -597,6 +619,16 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
         Chưa có đơn vay nào. <a onclick="showS('screen-home')" style="color:var(--gold);cursor:pointer">Đăng ký ngay →</a>
       </div>
     </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ SCREEN: LOAN DETAIL ══ -->
+<div class="screen" id="screen-loan-detail">
+<div style="width:100%;max-width:560px;animation:slideUp .5s ease both">
+  <button onclick="showS('screen-myloans')" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:20px;font-family:'DM Sans',sans-serif">← Quay lại khoản vay của tôi</button>
+  <div id="ld-card" style="background:var(--card);border:1px solid var(--border2);border-radius:var(--r2);padding:28px">
+    <!-- filled by JS -->
   </div>
 </div>
 </div>
@@ -1023,11 +1055,40 @@ var QQS=['Lãi suất bao nhiêu?','30% là gì?','Phí phạt trễ?','Vay tố
 function toggleChat(){
   cOpen=!cOpen;
   document.getElementById('cwin').classList.toggle('open',cOpen);
-  if(cOpen&&!cInit){cInit=true;addBotMsg('Xin chào! Tôi là <b>VayBot</b> 🤖<br>Giải đáp mọi câu hỏi về khoản vay. Bạn muốn hỏi gì?');renderQR();}
+  if(cOpen&&!cInit){
+    cInit=true;
+    var greeting='Xin chào! Tôi là <b>VayBot</b> 🤖<br>Giải đáp mọi câu hỏi về khoản vay. Bạn muốn hỏi gì?';
+    if(CU){
+      var active=allMyLoans.find(function(l){return['disbursed','overdue'].includes(l.status)});
+      if(active){
+        var due=active.dueDate?new Date(active.dueDate):null;
+        var isOD=due&&new Date()>due;
+        greeting='Xin chào <b>'+CU.name.split(' ').pop()+'</b>! 👋<br>'
+          +(isOD
+            ?'⚠️ Khoản vay <b>'+(active.loanLabel||'')+'</b> của bạn đang <b style="color:var(--red)">quá hạn</b>. Hãy thanh toán sớm để tránh phí phạt!'
+            :'Khoản vay <b>'+(active.loanLabel||'')+'</b> của bạn đang hoạt động. Hạn trả: <b>'+(due?due.toLocaleDateString('vi-VN'):'—')+'</b>.'
+          )+'<br>Tôi có thể giúp gì cho bạn?';
+      } else {
+        greeting='Xin chào <b>'+CU.name.split(' ').pop()+'</b>! 👋<br>Tôi là VayBot — sẵn sàng hỗ trợ bạn về khoản vay. Hỏi tôi bất cứ điều gì!';
+      }
+    }
+    addBotMsg(greeting);
+    renderQR();
+  }
 }
 
 function renderQR(){
-  document.getElementById('qreplies').innerHTML=QQS.map(function(q){
+  // Context-aware quick replies
+  var qs=['Lãi suất bao nhiêu?','30% là gì?','Phí phạt trễ?','Vay tối đa bao nhiêu?','Giải ngân bao lâu?'];
+  if(CU){
+    var active=allMyLoans.find(function(l){return['disbursed','overdue'].includes(l.status)});
+    if(active){
+      qs=['Khoản vay của tôi còn bao nhiêu?','Hạn trả nợ của tôi khi nào?','Tôi bị phạt bao nhiêu?','Cách thanh toán nợ?','Có thể trả sớm không?'];
+    } else if(allMyLoans.length){
+      qs=['Đơn vay của tôi đến đâu rồi?','Khi nào tôi được giải ngân?','Tôi cần làm gì tiếp theo?','Phí CM 30% là gì?','Liên hệ admin ở đâu?'];
+    }
+  }
+  document.getElementById('qreplies').innerHTML=qs.map(function(q){
     return'<button class="qrb" onclick="askQ(\''+q+'\')">'+q+'</button>';
   }).join('');
 }
@@ -1061,26 +1122,87 @@ function hideTyping(){var t=document.getElementById('typing');if(t)t.remove();}
 
 function getBotR(txt){
   showTyping();
-  var reply=null;
-  for(var kw in KB){if(txt.indexOf(kw)>=0){reply=KB[kw];break;}}
+
+  // Build dynamic context from current user & loans
+  function buildContext(){
+    var ctx = '=== HỆ THỐNG VAYNGAY ===\n'
+      +'Gói vay: 1tr→10tr | Lãi: 10%/1tr/tháng | Phí CM: 30% (hoàn lại) | Kỳ hạn: 1/2/4 tháng\n'
+      +'Phạt trễ: 1% số dư + 2.000đ/ngày | Giải ngân: 15-30 phút | QR: 10 phút\n\n';
+
+    if(CU){
+      ctx += '=== THÔNG TIN NGƯỜI DÙNG ===\n'
+        +'Tên: '+CU.name+' | SĐT: '+CU.phone+'\n'
+        +'Email: '+(CU.email||'—')+' | CCCD: '+(CU.cccd||'—')+'\n'
+        +'Địa chỉ: '+(CU.address||'—')+'\n'
+        +'eKYC: '+(CU.kycStatus||'chưa xác thực')+'\n\n';
+
+      var active=allMyLoans.find(function(l){return['disbursed','overdue'].includes(l.status)});
+      if(active){
+        var now=new Date(), due=active.dueDate?new Date(active.dueDate):null;
+        var isOD=due&&now>due;
+        var daysLate=isOD?Math.ceil((now-due)/(1000*60*60*24)):0;
+        var daysLeft=!isOD&&due?Math.ceil((due-now)/(1000*60*60*24)):0;
+        var rem=active.remaining!=null?active.remaining:active.total;
+        var penalty=isOD?daysLate*2000+Math.round(rem*0.01):0;
+        ctx += '=== KHOẢN VAY ĐANG HOẠT ĐỘNG ===\n'
+          +'Gói: '+(active.loanLabel||active.loanAmount.toLocaleString('vi-VN')+'đ')+'\n'
+          +'Tổng phải trả: '+active.total.toLocaleString('vi-VN')+'đ\n'
+          +'Số dư còn lại: '+rem.toLocaleString('vi-VN')+'đ\n'
+          +'Trả mỗi tháng: '+active.planPerMonth.toLocaleString('vi-VN')+'đ ('+(active.planLabel||active.planMonths+' tháng')+')\n'
+          +'Hạn trả: '+(due?due.toLocaleDateString('vi-VN'):'—')+'\n'
+          +'Trạng thái: '+(isOD?'QUÁ HẠN '+daysLate+' ngày':'Đang vay, còn '+daysLeft+' ngày')+'\n'
+          +(isOD?'Phí phạt tích lũy ≈ '+penalty.toLocaleString('vi-VN')+'đ\n':'')
+          +'Mục đích: '+(active.purpose||'—')+'\n\n';
+      } else {
+        var pending=allMyLoans.find(function(l){return['reviewing','approved','pending_payment','pending'].includes(l.status)});
+        if(pending){
+          ctx += '=== ĐƠN VAY ĐANG CHỜ DUYỆT ===\n'
+            +'Gói: '+(pending.loanLabel||pending.loanAmount.toLocaleString('vi-VN')+'đ')+'\n'
+            +'Trạng thái: '+({reviewing:'Đang xét duyệt',approved:'Đã duyệt - chờ TT 30%',pending_payment:'Chờ xác nhận TT 30%',pending:'Chờ xử lý'}[pending.status]||pending.status)+'\n'
+            +'Phí CM 30%: '+pending.proof.toLocaleString('vi-VN')+'đ\n\n';
+        } else if(allMyLoans.length){
+          ctx += 'Người dùng đã từng có khoản vay nhưng đã tất toán.\n\n';
+        } else {
+          ctx += 'Người dùng chưa có khoản vay nào.\n\n';
+        }
+      }
+    } else {
+      ctx += 'Người dùng chưa đăng nhập.\n\n';
+    }
+    return ctx;
+  }
+
   if(!reply){
-    // Call Claude API
+    var sysPrompt = buildContext()
+      +'=== HƯỚNG DẪN TRẢ LỜI ===\n'
+      +'Bạn là VayBot — trợ lý AI của VayNgay. Dựa vào thông tin người dùng ở trên để trả lời chính xác và cá nhân hóa.\n'
+      +'Nếu người dùng hỏi về khoản vay của mình, hãy dùng dữ liệu thực tế bên trên.\n'
+      +'Trả lời bằng tiếng Việt, ngắn gọn, thân thiện. Tối đa 120 từ. Dùng số liệu cụ thể khi có thể.';
+
     fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+      method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:250,
-        system:'Bạn là VayBot, nhân viên tư vấn VayNgay - ứng dụng cho vay tại Việt Nam. Gói vay: 1-10tr. Lãi: 10% mỗi 1tr/tháng. CM 30% (hoàn lại khi giải ngân). Kỳ hạn: 1,2,4 tháng. Phạt trễ: 1%+2000đ/ngày. Giải ngân: 15-30 phút. Trả lời ngắn gọn tiếng Việt, tối đa 80 từ.',
-        messages:[{role:'user',content:txt}]
+        model:'claude-sonnet-4-20250514', max_tokens:300,
+        system: sysPrompt,
+        messages:[{role:'user', content:txt}]
       })
     }).then(function(r){return r.json()}).then(function(d){
       var r=(d.content&&d.content[0]&&d.content[0].text)||null;
-      setTimeout(function(){hideTyping();addBotMsg(r||'Xin lỗi, tôi chưa có thông tin về câu hỏi này. Liên hệ hotline <b>1800-VAYNGAY</b> nhé! 📞');setTimeout(renderQR,500)},800);
+      setTimeout(function(){
+        hideTyping();
+        addBotMsg(r||'Xin lỗi, tôi chưa có thông tin về câu hỏi này. Liên hệ hotline <b>1800-VAYNGAY</b> nhé! 📞');
+        setTimeout(renderQR,500);
+      },600);
     }).catch(function(){
-      setTimeout(function(){hideTyping();addBotMsg('Xin lỗi, tôi chưa có thông tin về câu hỏi này. Liên hệ hotline <b>1800-VAYNGAY</b> nhé! 📞');setTimeout(renderQR,500)},800);
+      setTimeout(function(){
+        hideTyping();
+        addBotMsg('Xin lỗi, không thể kết nối bot lúc này. Liên hệ hotline <b>1800-VAYNGAY</b> để được hỗ trợ! 📞');
+        setTimeout(renderQR,500);
+      },600);
     });
     return;
   }
-  setTimeout(function(){hideTyping();addBotMsg(reply);setTimeout(renderQR,500);},700+Math.random()*500);
+  setTimeout(function(){hideTyping();addBotMsg(reply);setTimeout(renderQR,500);}, 600+Math.random()*400);
 }
 
 function sendChat(){
@@ -1219,17 +1341,13 @@ var currentRepayLoan=null;
 async function loadMyLoans(){
   if(!CU)return;
   showS('screen-myloans');
-
-  // Load from API
   var loans=[];
   try{
     var res=await fetch(API+'/api/applications/my/'+CU.phone);
     var json=await res.json();
     if(json.success) loans=json.data||[];
-  }catch(e){
-    // Demo: pull from localStorage
-    loans=[];
-  }
+  }catch(e){ loans=[]; }
+  allMyLoans = loans; // save globally for viewLoanDetail
 
   var active=loans.find(function(l){return ['disbursed','overdue'].includes(l.status)});
   var activeDiv=document.getElementById('myloans-active');
@@ -1271,23 +1389,149 @@ async function loadMyLoans(){
   // History list
   var listEl=document.getElementById('myloans-list');
   var emptyEl=document.getElementById('myloans-empty');
-  if(!loans.length){
-    listEl.innerHTML=''; emptyEl.style.display='block'; return;
-  }
+  if(!loans.length){ listEl.innerHTML=''; emptyEl.style.display='block'; return; }
   emptyEl.style.display='none';
+  var smap={reviewing:'⏳',approved:'✓',pending_payment:'💳',pending:'🕐',disbursed:'💰',overdue:'⚠️',paid:'✅',rejected:'✗'};
+  var slbl={reviewing:'Đang xét',approved:'Đã duyệt',pending_payment:'Chờ TT 30%',pending:'Chờ xử lý',disbursed:'Đang vay',overdue:'Quá hạn',paid:'Đã tất toán',rejected:'Từ chối'};
   listEl.innerHTML=loans.map(function(l){
-    var smap={reviewing:'⏳',approved:'✓',pending_payment:'💳',pending:'🕐',disbursed:'💰',overdue:'⚠️',paid:'✅',rejected:'✗'};
-    return '<div class="history-item">'
-      +'<div>'
-        +'<div style="font-weight:600;margin-bottom:2px">'+(l.loanLabel||fmt(l.loanAmount))+'</div>'
-        +'<div style="font-size:11px;color:var(--muted)">'+(l.planLabel||l.planMonths+'T')+' — '+new Date(l.submitTime).toLocaleDateString('vi-VN')+'</div>'
+    var now=new Date(), due=l.dueDate?new Date(l.dueDate):null;
+    var isOD=due&&now>due&&l.status!=='paid';
+    var canPay=['disbursed','overdue'].includes(l.status);
+    var canResume=['pending','approved','pending_payment'].includes(l.status);
+    var rem=l.remaining!=null?l.remaining:l.total;
+    var lid=l._id;
+    return '<div class="history-item" onclick="viewLoanDetail(''+lid+'')" style="flex-direction:column;align-items:stretch;gap:0;padding:0">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px">'
+        +'<div>'
+          +'<div style="font-weight:600;margin-bottom:3px;font-size:14px">'+(l.loanLabel||fmt(l.loanAmount))+'</div>'
+          +'<div style="font-size:11px;color:var(--muted)">'+(l.planLabel||l.planMonths+' tháng')+' · '+new Date(l.submitTime).toLocaleDateString('vi-VN')+'</div>'
+          +(canPay?'<div style="font-size:11px;color:'+(isOD?'var(--red)':'var(--muted)')+';margin-top:3px">'+(isOD?'⚠️ Quá hạn — ':'Còn lại: ')+fmt(rem)+'</div>':'')
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:8px">'
+          +'<div style="text-align:right">'
+            +'<div class="badge '+l.status+'">'+(smap[l.status]||'')+' '+(slbl[l.status]||l.status)+'</div>'
+            +(due&&!['paid','rejected'].includes(l.status)?'<div style="font-size:10px;color:'+(isOD?'var(--red)':'var(--muted)')+';margin-top:4px">Hạn: '+due.toLocaleDateString('vi-VN')+'</div>':'')
+          +'</div>'
+          +'<span style="color:var(--muted);font-size:18px">›</span>'
+        +'</div>'
       +'</div>'
-      +'<div style="text-align:right">'
-        +'<div class="badge '+l.status+'">'+(smap[l.status]||'')+(l.status==='reviewing'?' Đang xét':l.status==='approved'?' Đã duyệt':l.status==='pending_payment'?' Chờ TT':l.status==='pending'?' Pending':l.status==='disbursed'?' Giải ngân':l.status==='overdue'?' Quá hạn':l.status==='paid'?' Đã trả':' Từ chối')+'</div>'
-        +'<div style="font-size:11px;color:var(--muted);margin-top:4px">Tổng: '+fmt(l.total)+'</div>'
-      +'</div>'
+      +((canPay||canResume)
+        ?'<div style="display:flex;gap:8px;padding:0 16px 14px" onclick="event.stopPropagation()">'
+          +(canPay?'<button onclick="startRepayFor(''+lid+'')" style="flex:1;margin-top:10px;padding:9px;background:linear-gradient(135deg,var(--green),#00A86B);color:#001A10;border:none;border-radius:10px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:700;cursor:pointer">💳 Thanh toán ngay</button>':'')
+          +(canResume?'<button onclick="resumePayForLoan(''+lid+'')" style="flex:1;margin-top:10px;padding:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0A0800;border:none;border-radius:10px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:700;cursor:pointer">💳 Tiếp tục TT 30%</button>':'')
+          +'</div>'
+        :'')
       +'</div>';
   }).join('');
+}
+
+// ══ LOAN DETAIL ══
+var allMyLoans = [];
+
+function viewLoanDetail(id){
+  var l = allMyLoans.find(function(x){ return x._id===id; });
+  if(!l){ showToast('Không tìm thấy thông tin khoản vay','err'); return; }
+  currentRepayLoan = l;
+
+  var now=new Date(), due=l.dueDate?new Date(l.dueDate):null;
+  var isOD=due&&now>due&&l.status!=='paid';
+  var daysLeft=due?Math.ceil((due-now)/(1000*60*60*24)):null;
+  var daysLate=isOD?Math.abs(daysLeft):0;
+  var penalty=isOD?daysLate*2000+Math.round((l.remaining||l.total)*0.01):0;
+  var rem=l.remaining!=null?l.remaining:l.total;
+  var pct=due&&l.disburseTime?Math.max(0,Math.min(100,Math.round((now-new Date(l.disburseTime))/(due-new Date(l.disburseTime))*100))):0;
+  var barCol=pct>80?'var(--red)':pct>50?'var(--gold)':'var(--green)';
+
+  var statusLabels={reviewing:'⏳ Đang xét duyệt',approved:'✓ Hồ sơ đã duyệt',pending_payment:'💳 Chờ thanh toán 30%',pending:'🕐 Chờ xử lý',disbursed:'💰 Đang giải ngân',overdue:'⚠️ Quá hạn thanh toán',paid:'✅ Đã tất toán',rejected:'✗ Bị từ chối'};
+
+  // Timeline steps
+  var steps=[
+    {key:'submitted', label:'Đã gửi đơn vay', sub:new Date(l.submitTime).toLocaleString('vi-VN'), done:true},
+    {key:'approved',  label:'Hồ sơ được duyệt', sub:['approved','pending_payment','disbursed','overdue','paid'].includes(l.status)?'Hồ sơ hợp lệ':'Đang xét duyệt', done:['approved','pending_payment','disbursed','overdue','paid'].includes(l.status)},
+    {key:'paid30',    label:'Thanh toán 30% CM', sub:l.paidConfirm?'Đã xác nhận':'Chưa thanh toán', done:l.paidConfirm, active:l.status==='approved'&&!l.paidConfirm},
+    {key:'disbursed', label:'Giải ngân', sub:l.disburseTime?new Date(l.disburseTime).toLocaleString('vi-VN'):'Chờ admin duyệt', done:['disbursed','overdue','paid'].includes(l.status)},
+    {key:'repaid',    label:'Tất toán khoản vay', sub:l.status==='paid'?'Hoàn tất':'Còn lại '+fmt(rem), done:l.status==='paid'},
+  ];
+
+  var canPay=['disbursed','overdue'].includes(l.status);
+  var canResume=['pending','approved','pending_payment'].includes(l.status);
+
+  document.getElementById('ld-card').innerHTML=
+    // Header
+    '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px">'
+      +'<div>'
+        +'<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Khoản vay</div>'
+        +'<div style="font-family:Syne,sans-serif;font-size:36px;font-weight:800;color:var(--gold);letter-spacing:-1px">'+(l.loanLabel||fmt(l.loanAmount))+'</div>'
+      +'</div>'
+      +'<span class="badge '+l.status+'">'+(statusLabels[l.status]||l.status)+'</span>'
+    +'</div>'
+    // Info grid
+    +'<div class="ld-grid">'
+      +[
+        ['Tổng phải trả',fmt(l.total),'var(--red)'],
+        ['Đã nhận về',fmt(l.disburse),'var(--green)'],
+        ['Kỳ hạn',l.planLabel||l.planMonths+' tháng','var(--text)'],
+        ['Trả mỗi tháng',fmt(l.planPerMonth),'var(--gold)'],
+        ['Hạn trả nợ',due?due.toLocaleDateString('vi-VN'):'—',isOD?'var(--red)':'var(--text)'],
+        ['Ngày giải ngân',l.disburseTime?new Date(l.disburseTime).toLocaleDateString('vi-VN'):'—','var(--muted)'],
+      ].map(function(r){
+        return '<div class="ld-item"><div class="k">'+r[0]+'</div><div class="v" style="color:'+r[2]+'">'+r[1]+'</div></div>';
+      }).join('')
+    +'</div>'
+    // Remaining + progress
+    +(canPay
+      ?'<div style="background:'+(isOD?'rgba(255,45,75,.08)':'rgba(0,214,143,.06)')+';border:1px solid '+(isOD?'rgba(255,45,75,.2)':'rgba(0,214,143,.2)')+';border-radius:var(--r);padding:14px;margin-bottom:18px">'
+        +'<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px">'
+          +'<span style="color:var(--muted)">Số dư còn lại</span>'
+          +'<span style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:'+(isOD?'var(--red)':'var(--green)')+'">'+fmt(rem)+'</span>'
+        +'</div>'
+        +(isOD?'<div style="font-size:12px;color:var(--red);margin-bottom:8px">⚠️ Quá hạn '+daysLate+' ngày — Phí phạt ≈ '+fmt(penalty)+'</div>':'')
+        +'<div class="deadline-bar"><div class="deadline-fill" style="width:'+pct+'%;background:'+barCol+'"></div></div>'
+        +'<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px"><span>0%</span><span>Tiến độ: '+pct+'%</span><span>100%</span></div>'
+      +'</div>'
+      :'')
+    // Timeline
+    +'<div style="margin-bottom:18px">'
+      +'<div class="ld-section-title">📍 Tiến trình</div>'
+      +'<div class="ld-timeline">'
+        +steps.map(function(s){
+          var cls=s.done?'done':s.active?'active':'wait';
+          var icon=s.done?'✓':s.active?'●':'○';
+          return '<div class="ld-tl-item">'
+            +'<div class="ld-tl-dot '+cls+'">'+icon+'</div>'
+            +'<div class="ld-tl-body">'
+              +'<div class="ld-tl-title" style="color:'+(s.done?'var(--text)':s.active?'var(--red)':'var(--muted)')+'">'+s.label+'</div>'
+              +'<div class="ld-tl-sub">'+s.sub+'</div>'
+            +'</div>'
+          +'</div>';
+        }).join('')
+      +'</div>'
+    +'</div>'
+    // Action buttons
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap">'
+      +(canPay?'<button class="btn btn-green" onclick="startRepayFor(\''+l._id+'\')" style="margin-top:0;flex:1">💳 Thanh toán ngay</button>':'')
+      +(canResume?'<button class="btn btn-gold" onclick="resumePayForLoan(\''+l._id+'\')" style="margin-top:0;flex:1">💳 Tiếp tục TT 30%</button>':'')
+      +(l.status==='overdue'?'<button class="btn btn-ghost" onclick="showToast(\'📞 Hotline: 1800-VAYNGAY\',\'ok\')" style="margin-top:0">📞 Hỗ trợ</button>':'')
+    +'</div>';
+
+  showS('screen-loan-detail');
+}
+
+function startRepayFor(id){
+  var l = allMyLoans.find(function(x){ return x._id===id; });
+  if(!l){ showToast('Không tìm thấy khoản vay','err'); return; }
+  currentRepayLoan = l;
+  goRepay();
+}
+
+function resumePayForLoan(id){
+  var l = allMyLoans.find(function(x){ return x._id===id; });
+  if(!l){ showToast('Không tìm thấy khoản vay','err'); return; }
+  // Set SL/SP from loan data so QR is generated correctly
+  SL={a:l.loanAmount,lb:l.loanLabel,interest:l.interest,proof:l.proof,total:l.total,disburse:l.disburse};
+  SP={months:l.planMonths,pm:l.planPerMonth,lb:l.planLabel};
+  currentAppId = l._id;
+  setupPay();
 }
 
 // ══ REPAY ══
