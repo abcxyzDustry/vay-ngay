@@ -150,7 +150,7 @@ tr:hover td{background:rgba(255,255,255,0.018)}
 /* ── MODAL ── */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s}
 .overlay.open{opacity:1;pointer-events:all}
-.modal{background:var(--card2);border:1px solid var(--border2);border-radius:20px;padding:26px;max-width:520px;width:100%;transform:scale(.94);transition:transform .22s;max-height:90vh;overflow-y:auto}
+.modal{background:var(--card2);border:1px solid var(--border2);border-radius:20px;padding:26px;max-width:620px;width:100%;transform:scale(.94);transition:transform .22s;max-height:92vh;overflow-y:auto}
 .modal::-webkit-scrollbar{width:3px}
 .modal::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .overlay.open .modal{transform:scale(1)}
@@ -180,7 +180,33 @@ tr:hover td{background:rgba(255,255,255,0.018)}
 .sr:last-child{border-bottom:none}
 .sr .k{color:var(--muted);font-size:11px}.sr .v{font-weight:600}
 
-/* ── TOAST ── */
+/* ── LOAN DETAIL TIMELINE ── */
+.tl-wrap{margin:14px 0}
+.tl-item{display:flex;gap:11px;position:relative;padding-bottom:14px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:10px;top:22px;bottom:0;width:1px;background:var(--border)}
+.tl-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px;position:relative;z-index:1}
+.tl-dot.done{background:var(--green);color:#001A10}
+.tl-dot.active{background:var(--red);color:#fff;animation:pg 2s infinite}
+.tl-dot.wait{background:var(--bg3);border:1px solid var(--border2);color:var(--muted2)}
+.tl-body{flex:1}
+.tl-title{font-size:13px;font-weight:600;margin-bottom:1px}
+.tl-sub{font-size:11px;color:var(--muted)}
+/* ── REPAY HISTORY IN MODAL ── */
+.rh-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.03);margin-bottom:6px;font-size:12px}
+.rh-item:last-child{margin-bottom:0}
+.rh-amt{font-family:'Syne',sans-serif;font-weight:700;font-size:14px}
+/* ── OVERDUE ALERT ── */
+.overdue-alert{background:rgba(255,45,75,.08);border:1px solid rgba(255,45,75,.2);border-radius:var(--r);padding:12px 14px;margin:10px 0;font-size:12px;line-height:1.7}
+.overdue-alert strong{color:var(--red);display:block;margin-bottom:3px;font-size:13px}
+/* ── REMAINING BAR ── */
+.rem-bar-wrap{background:rgba(255,255,255,.06);border-radius:4px;height:5px;overflow:hidden;margin-top:5px}
+.rem-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+/* ── INFO GRID IN MODAL ── */
+.info-2col{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}
+.info-cell{background:rgba(255,255,255,.04);border-radius:9px;padding:9px 11px}
+.info-cell .k{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.info-cell .v{font-size:12px;font-weight:600}
 .toast{position:fixed;top:68px;left:50%;transform:translateX(-50%) translateY(-14px);background:var(--card2);border:1px solid var(--border2);border-radius:10px;padding:9px 16px;font-size:12px;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:9999;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-color:rgba(0,214,143,.35);color:var(--green)}
@@ -783,33 +809,153 @@ async function viewLoan(id){
   var a = allLoans.find(function(l){ return l._id===id; });
   if(!a) return;
   document.getElementById('ml-note').value = a.adminNote||'';
-  var rem = a.remaining!=null ? a.remaining : a.total;
-  document.getElementById('ml-body').innerHTML = [
-    ['Họ và tên',a.name,'var(--text)'],['SĐT',a.phone,'var(--text)'],
-    ['CCCD',a.cccd,'var(--muted)'],['Ngày sinh',a.dob,'var(--muted)'],
-    ['Địa chỉ',a.address,'var(--muted)'],['Thu nhập',a.income,'var(--text)'],
-    ['Nghề nghiệp',a.job,'var(--text)'],['Mục đích',a.purpose,'var(--text)'],
-    ['Ngân hàng',a.bank,'var(--text)'],['Số TK NH',a.bankAccount,'var(--text)'],
-    ['Khoản vay',fmt(a.loanAmount),'var(--gold)'],['Lãi',fmt(a.interest),'var(--red)'],
-    ['Phí CM 30%',fmt(a.proof),'var(--purple)'],['Nhận về',fmt(a.disburse),'var(--green)'],
-    ['Tổng hoàn trả',fmt(a.total),'var(--red)'],['Còn lại',fmt(rem),rem<=0?'var(--green)':'var(--text)'],
-    ['Kỳ hạn',a.planLabel||a.planMonths+'T','var(--text)'],['Mỗi tháng',fmt(a.planPerMonth),'var(--gold)'],
-    ['Trạng thái',sBadge(a.status),'var(--text)'],
-    ['Ngày ĐK',fmtDate(a.submitTime),'var(--muted)'],
-    ['Ngày giải ngân',a.disburseTime?fmtDate(a.disburseTime):'—','var(--green)'],
-    ['Hạn trả nợ',a.dueDate?fmtDateS(a.dueDate):'—','var(--red)'],
-    ['Đã TT 30%',a.paidConfirm?'✅ Có':'❌ Chưa','var(--text)'],
-  ].map(function(r){
-    return '<div class="drow"><span class="dk">'+r[0]+'</span><span class="dv" style="color:'+r[2]+'">'+r[1]+'</span></div>';
-  }).join('');
 
+  // ── Tính toán số liệu ──
+  var now   = new Date();
+  var due   = a.dueDate   ? new Date(a.dueDate)   : null;
+  var disp  = a.disburseTime ? new Date(a.disburseTime) : null;
+  var isOD  = due && now > due && a.status !== 'paid';
+  var daysLate  = isOD ? Math.ceil((now - due) / (1000*60*60*24)) : 0;
+  var daysLeft  = due && !isOD ? Math.ceil((due - now) / (1000*60*60*24)) : 0;
+  var rem   = a.remaining != null ? a.remaining : a.total;
+  var penalty = isOD ? daysLate * 2000 + Math.round(rem * 0.01) : 0;
+  var pct   = (disp && due) ? Math.max(0,Math.min(100,Math.round((now-disp)/(due-disp)*100))) : 0;
+  var barCol = pct > 80 ? 'var(--red)' : pct > 50 ? 'var(--gold)' : 'var(--green)';
+
+  // ── Fetch lịch sử thanh toán ──
+  var repayHistory = [];
+  try {
+    var rr = await fetch(API+'/api/repayments/loan/'+id).then(function(r){ return r.json(); });
+    if(rr.success) repayHistory = rr.data || [];
+  } catch(e){}
+  var totalPaid = repayHistory.filter(function(r){ return r.status==='confirmed'; }).reduce(function(s,r){ return s+r.amount; }, 0);
+
+  // ── Timeline steps ──
+  var steps = [
+    { label:'Gửi đơn đăng ký',   sub: fmtDate(a.submitTime),                      done:true },
+    { label:'Hồ sơ được duyệt',  sub: ['approved','pending_payment','disbursed','overdue','paid'].includes(a.status) ? 'Hồ sơ hợp lệ' : '⏳ Đang xét duyệt', done:['approved','pending_payment','disbursed','overdue','paid'].includes(a.status) },
+    { label:'Thanh toán CM 30%', sub: a.paidConfirm ? '✅ Đã xác nhận — '+fmt(a.proof) : '⏳ Chờ khách chuyển '+fmt(a.proof), done:a.paidConfirm, active:a.status==='approved'&&!a.paidConfirm },
+    { label:'Giải ngân',         sub: disp ? '💰 '+fmtDate(a.disburseTime) : '⏳ Chờ admin xử lý', done:['disbursed','overdue','paid'].includes(a.status) },
+    { label:'Tất toán khoản vay',sub: a.status==='paid' ? '✅ Hoàn tất' : rem<=0 ? '✅ Đã thanh toán đủ' : 'Còn lại: '+fmt(rem)+(totalPaid?' · Đã thu: '+fmt(totalPaid):''), done:a.status==='paid'||rem<=0 },
+  ];
+
+  // ── Build HTML ──
+  var html = '';
+
+  // Header
+  html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">'
+    +'<div>'
+      +'<div style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Khoản vay</div>'
+      +'<div style="font-family:Syne,sans-serif;font-size:30px;font-weight:800;color:var(--gold);letter-spacing:-1px">'+(a.loanLabel||fmt(a.loanAmount))+'</div>'
+      +'<div style="font-size:11px;color:var(--muted);margin-top:2px">'+(a.planLabel||a.planMonths+' tháng')+' · '+a.name+' · '+a.phone+'</div>'
+    +'</div>'
+    +sBadge(a.status)
+  +'</div>';
+
+  // Overdue alert
+  if(isOD) {
+    html += '<div class="overdue-alert">'
+      +'<strong>⚠️ Quá hạn '+daysLate+' ngày</strong>'
+      +'Phí phạt tích lũy: <b style="color:var(--red)">'+fmt(penalty)+'</b>'
+      +' (1% số dư + 2.000đ × '+daysLate+' ngày)<br>'
+      +'Hạn trả đã qua: '+fmtDateS(a.dueDate)
+    +'</div>';
+  }
+
+  // Remaining progress bar
+  if(['disbursed','overdue'].includes(a.status)){
+    var remPct = a.total > 0 ? Math.max(0,Math.min(100,Math.round((1-rem/a.total)*100))) : 0;
+    html += '<div style="background:rgba(255,255,255,.04);border-radius:var(--r);padding:12px 14px;margin-bottom:12px">'
+      +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">'
+        +'<span style="color:var(--muted)">Tiến độ thanh toán</span>'
+        +'<span style="font-weight:700;color:'+(rem<=0?'var(--green)':'var(--text)')+'">Còn lại: '+fmt(rem)+(totalPaid?' · Đã trả: '+fmt(totalPaid):'')+' </span>'
+      +'</div>'
+      +'<div class="rem-bar-wrap"><div class="rem-bar-fill" style="width:'+remPct+'%;background:'+(remPct>=100?'var(--green)':remPct>=50?'var(--gold)':'var(--red)')+'"></div></div>'
+      +'<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);margin-top:4px"><span>0đ</span><span>'+remPct+'% đã trả</span><span>'+fmt(a.total)+'</span></div>'
+    +'</div>';
+  }
+
+  // Info grid 2 cols
+  html += '<div class="info-2col">'
+    + [
+        ['Khoản vay',      fmt(a.loanAmount),         'var(--gold)'],
+        ['Lãi suất',       fmt(a.interest),            'var(--red)'],
+        ['Phí CM 30%',     fmt(a.proof),               'var(--purple)'],
+        ['Nhận về',        fmt(a.disburse),            'var(--green)'],
+        ['Tổng hoàn trả',  fmt(a.total),               'var(--red)'],
+        ['Số dư còn lại',  fmt(rem),                   rem<=0?'var(--green)':'var(--text)'],
+        ['Trả mỗi tháng',  fmt(a.planPerMonth),        'var(--gold)'],
+        ['Hạn trả nợ',     due?fmtDateS(due):'—',    isOD?'var(--red)':due&&daysLeft<7?'var(--orange)':'var(--text)'],
+      ].map(function(r){
+        return '<div class="info-cell"><div class="k">'+r[0]+'</div><div class="v" style="color:'+r[2]+'">'+r[1]+'</div></div>';
+      }).join('')
+  +'</div>';
+
+  // Borrower info
+  html += '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:12px 0 6px">Thông tin khách hàng</div>'
+    +'<div class="info-2col">'
+    + [
+        ['CCCD',          a.cccd||'—',    'var(--muted)'],
+        ['Ngày sinh',     a.dob||'—',     'var(--muted)'],
+        ['Thu nhập',      a.income||'—',  'var(--text)'],
+        ['Nghề nghiệp',   a.job||'—',     'var(--text)'],
+        ['Mục đích vay',  a.purpose||'—', 'var(--text)'],
+        ['Ngân hàng NH',  (a.bank||'—')+' '+(a.bankAccount||''), 'var(--text)'],
+      ].map(function(r){
+        return '<div class="info-cell"><div class="k">'+r[0]+'</div><div class="v" style="color:'+r[2]+'">'+r[1]+'</div></div>';
+      }).join('')
+  +'</div>';
+
+  // Timeline
+  html += '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:14px 0 8px">📍 Tiến trình xử lý</div>'
+    +'<div class="tl-wrap">'
+    + steps.map(function(s){
+        var cls = s.done?'done':s.active?'active':'wait';
+        return '<div class="tl-item">'
+          +'<div class="tl-dot '+cls+'">'+(s.done?'✓':s.active?'●':'○')+'</div>'
+          +'<div class="tl-body">'
+            +'<div class="tl-title" style="color:'+(s.done?'var(--text)':s.active?'var(--red)':'var(--muted)')+'">'+s.label+'</div>'
+            +'<div class="tl-sub">'+s.sub+'</div>'
+          +'</div>'
+        +'</div>';
+      }).join('')
+  +'</div>';
+
+  // Repayment history
+  if(repayHistory.length){
+    var typeMap={monthly:'📅 Hàng tháng',full:'💯 Tất toán',partial:'🔸 Một phần',penalty:'⚠️ Phí phạt'};
+    html += '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:14px 0 8px">💳 Lịch sử thanh toán ('+repayHistory.length+')</div>'
+      + repayHistory.map(function(r){
+          var statusCol = r.status==='confirmed'?'var(--green)':r.status==='rejected'?'var(--red)':'var(--gold)';
+          var statusTxt = r.status==='confirmed'?'✓ Đã xác nhận':r.status==='rejected'?'✗ Từ chối':'⏳ Chờ XN';
+          return '<div class="rh-item">'
+            +'<div>'
+              +'<div class="rh-amt" style="color:var(--green)">'+fmt(r.amount)+'</div>'
+              +'<div style="font-size:10px;color:var(--muted)">'+(typeMap[r.type]||r.type||'—')+' · '+fmtDateS(r.paidAt)+'</div>'
+            +'</div>'
+            +'<div style="text-align:right">'
+              +'<div style="font-size:11px;font-weight:600;color:'+statusCol+'">'+statusTxt+'</div>'
+              +(r.remainingAfter!=null?'<div style="font-size:10px;color:var(--muted)">Còn lại: '+fmt(r.remainingAfter)+'</div>':'')
+            +'</div>'
+          +'</div>';
+        }).join('');
+  } else if(['disbursed','overdue'].includes(a.status)){
+    html += '<div style="font-size:12px;color:var(--muted);padding:12px;background:rgba(255,255,255,.03);border-radius:9px;margin-top:10px;text-align:center">Chưa có giao dịch thanh toán nào</div>';
+  }
+
+  // Admin note
+  html += '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:14px 0 4px">📝 Ghi chú admin</div>';
+
+  document.getElementById('ml-body').innerHTML = html;
+
+  // Actions
   var btns='';
   if(a.status==='reviewing')        btns+='<button class="mb gold"  onclick="updateLoanStatus(\''+id+'\',\'approved\')">✓ Duyệt hồ sơ</button>';
   if(a.status==='approved')         btns+='<button class="mb gold"  onclick="updateLoanStatus(\''+id+'\',\'pending_payment\')">💳 YC TT 30%</button>';
   if(a.status==='pending_payment')  btns+='<button class="mb green" onclick="updateLoanStatus(\''+id+'\',\'disbursed\')">💰 Giải ngân</button>';
-  if(a.status==='disbursed'||a.status==='overdue') btns+='<button class="mb green" onclick="updateLoanStatus(\''+id+'\',\'paid\')">✅ Đánh dấu đã trả</button>';
-  if(!['paid','rejected'].includes(a.status)) btns+='<button class="mb red" onclick="updateLoanStatus(\''+id+'\',\'rejected\')">✗ Từ chối</button>';
-  btns+='<button class="mb ghost" onclick="saveLoanNote(\''+id+'\')">💾 Lưu GC</button>';
+  if(['disbursed','overdue'].includes(a.status)) btns+='<button class="mb green" onclick="updateLoanStatus(\''+id+'\',\'paid\')">✅ Tất toán</button>';
+  if(!['paid','rejected'].includes(a.status))    btns+='<button class="mb red"   onclick="updateLoanStatus(\''+id+'\',\'rejected\')">✗ Từ chối</button>';
+  btns += '<button class="mb ghost" onclick="saveLoanNote(\''+id+'\')">💾 Lưu ghi chú</button>';
   document.getElementById('ml-actions').innerHTML = btns;
   openModal('modal-loan');
 }
