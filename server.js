@@ -719,17 +719,115 @@ app.use((req, res) => fail(res, `Route ${req.method} ${req.path} không tồn t�
 //  CRON — Tự động đánh dấu quá hạn mỗi giờ
 // ─────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────
+//  GET /api/applications/summary/:phone
+//  Trả về tóm tắt khoản vay cho chatbot context
+// ─────────────────────────────────────────────────────────────
+app.get('/api/applications/summary/:phone', async (req, res) => {
+  try {
+    const loans = await Loan.find({ phone: req.params.phone })
+      .sort({ submitTime: -1 })
+      .limit(10);
+
+    const active = loans.find(l => ['disbursed','overdue'].includes(l.status));
+    const pending = loans.find(l => ['reviewing','approved','pending_payment','pending'].includes(l.status));
+
+    let summary = { totalLoans: loans.length, active: null, pending: null, lastPaid: null };
+
+    if (active) {
+      const now = new Date();
+      const due = active.dueDate ? new Date(active.dueDate) : null;
+      const isOverdue = due && now > due;
+      const daysLate  = isOverdue ? Math.ceil((now - due) / (1000*60*60*24)) : 0;
+      const daysLeft  = !isOverdue && due ? Math.ceil((due - now) / (1000*60*60*24)) : 0;
+      const rem = active.remaining != null ? active.remaining : active.total;
+      const penalty = isOverdue ? daysLate * 2000 + Math.round(rem * 0.01) : 0;
+
+      // Tổng đã trả
+      const repays = await Repayment.find({ loanId: active._id, status: 'confirmed' });
+      const totalPaid = repays.reduce((s, r) => s + r.amount, 0);
+
+      summary.active = {
+        _id:          active._id,
+        loanAmount:   active.loanAmount,
+        loanLabel:    active.loanLabel,
+        total:        active.total,
+        remaining:    rem,
+        totalPaid,
+        disburse:     active.disburse,
+        planMonths:   active.planMonths,
+        planPerMonth: active.planPerMonth,
+        planLabel:    active.planLabel,
+        purpose:      active.purpose,
+        status:       active.status,
+        isOverdue,
+        daysLate,
+        daysLeft,
+        penalty,
+        disburseTime: active.disburseTime,
+        dueDate:      active.dueDate,
+        dueDateFormatted: due ? due.toLocaleDateString('vi-VN') : null,
+      };
+    }
+
+    if (pending) {
+      summary.pending = {
+        _id:       pending._id,
+        loanLabel: pending.loanLabel,
+        loanAmount:pending.loanAmount,
+        proof:     pending.proof,
+        status:    pending.status,
+        submitTime:pending.submitTime,
+      };
+    }
+
+    const lastPaid = loans.find(l => l.status === 'paid');
+    if (lastPaid) {
+      summary.lastPaid = {
+        loanLabel:  lastPaid.loanLabel,
+        loanAmount: lastPaid.loanAmount,
+        submitTime: lastPaid.submitTime,
+      };
+    }
+
+    return ok(res, { data: summary });
+  } catch (e) { return fail(res, e.message, 500); }
+});
+
+// ─────────────────────────────────────────────────────────────
+//  CRON — Tự động đánh dấu quá hạn + log penalty mỗi giờ
+// ─────────────────────────────────────────────────────────────
+
 function startCron() {
   setInterval(async () => {
     try {
+      const now = new Date();
+
+      // Đánh dấu overdue
       const r = await Loan.updateMany(
-        { status: 'disbursed', dueDate: { $lt: new Date() } },
+        { status: 'disbursed', dueDate: { $lt: now } },
         { $set: { status: 'overdue' } }
       );
       if (r.modifiedCount > 0)
-        console.log(`⚠️  Auto-overdue: ${r.modifiedCount} khoản vay`);
+        console.log(`⚠️  [CRON] Auto-overdue: ${r.modifiedCount} khoản vay`);
+
+      // Log penalty cho khoản quá hạn (thông tin)
+      const overdueLoans = await Loan.find({ status: 'overdue' }, { _id:1, remaining:1, total:1, dueDate:1 });
+      for (const loan of overdueLoans) {
+        const daysLate = Math.ceil((now - new Date(loan.dueDate)) / (1000*60*60*24));
+        const rem      = loan.remaining != null ? loan.remaining : loan.total;
+        const penalty  = daysLate * 2000 + Math.round(rem * 0.01);
+        // Cập nhật ghi chú tự động (không ghi đè adminNote)
+        await Loan.updateOne(
+          { _id: loan._id },
+          { $set: { updatedAt: now } }
+        );
+        if (daysLate % 7 === 0) { // Log mỗi 7 ngày
+          console.log(`  📌 Loan ${loan._id}: quá hạn ${daysLate} ngày, phí phạt ≈ ${penalty.toLocaleString('vi-VN')}đ`);
+        }
+      }
     } catch (e) { console.error('Cron error:', e.message); }
-  }, 60 * 60 * 1000);
+  }, 60 * 60 * 1000); // mỗi 1 giờ
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -739,7 +837,7 @@ function startCron() {
 app.listen(PORT, () => {
   console.log('');
   console.log('╔══════════════════════════════════════════════════╗');
-  console.log('║         VAY NGAY BACKEND v3.0 — STARTED          ║');
+  console.log('║         VAY NGAY BACKEND v3.1 — STARTED          ║');
   console.log(`║  🌐  http://localhost:${PORT}                       ║`);
   console.log(`║  👤  http://localhost:${PORT}/            (khách)   ║`);
   console.log(`║  🛠️   http://localhost:${PORT}/admin       (admin)   ║`);
@@ -747,12 +845,15 @@ app.listen(PORT, () => {
   console.log(`║  🍃  DB: cluster0.nswegis.mongodb.net/vayngay      ║`);
   console.log('╠══════════════════════════════════════════════════╣');
   console.log('║  API Routes:                                      ║');
-  console.log('║  POST /api/auth/register|login                    ║');
+  console.log('║  POST   /api/auth/register|login                  ║');
   console.log('║  GET|PATCH /api/users                             ║');
   console.log('║  POST|GET|PATCH /api/kyc                          ║');
   console.log('║  POST|GET|PATCH|DELETE /api/applications          ║');
+  console.log('║  GET  /api/applications/my/:phone                 ║');
+  console.log('║  GET  /api/applications/summary/:phone            ║');
   console.log('║  POST|GET|PATCH /api/repayments                   ║');
-  console.log('║  GET /api/stats                                   ║');
+  console.log('║  GET  /api/repayments/loan/:loanId                ║');
+  console.log('║  GET  /api/stats                                  ║');
   console.log('╚══════════════════════════════════════════════════╝');
   console.log('');
 });
